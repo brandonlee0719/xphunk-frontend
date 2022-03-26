@@ -1,0 +1,131 @@
+.App {
+    max-width: 117rem;
+    padding: 6rem 4rem;
+    margin: 0 auto;
+}
+
+.post-header-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-bottom: 2rem;
+}
+
+h1 {
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+}
+
+h2 {
+    margin: 0;
+    line-height: 1;
+    font-size: 1.6rem;
+    padding: 1rem 0;
+    color: #ff04b4;
+}
+
+.select-container {
+    display: grid;
+    grid-template-columns: repeat(4, calc((100% / 4) - 1rem));
+    grid-column-gap: 2rem;
+    column-gap: 0rem;
+    padding-bottom: 2rem;
+    color: #ff04b4;
+}
+
+.selector {
+    padding: 0.5rem;
+    font-size: 1.4rem;
+    width: 100%;
+}
+
+.inactive-color {
+    color: #999;
+}
+
+.selector-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.visible {
+    visibility: visible;
+}
+
+.flex {
+    display: flex;
+    margin: 0 10px;
+}
+
+.filter {
+    width: 100%;
+    text-align: center;
+    padding-bottom: 1rem;
+}
+
+.filter-button {
+    border: none;
+    background: #ff04b4;
+    padding: 0;
+    margin: 0;
+    -webkit-appearance: none;
+    outline: none;
+    box-shadow: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    /* background-color: rgba(var(--pink), 1); */
+    color: #FFF;
+    padding: 0.5rem 1rem;
+    font-family: Montserrat, sans-serif;
+    font-weight: 600;
+    font-size: 1.6rem;
+    transition-property: all;
+    transition-duration: .2s;
+    transition-timing-function: cubic-bezier(.785, .135, .15, .86);
+    transition-delay: 0;
+}
+
+.listings-wrapper {
+    width: 100%;
+    display: grid;
+    align-content: start;
+    grid-template-columns: repeat(10, 10%);
+}
+
+.phunk-item-link {
+    text-decoration: none;
+}
+
+.phunk-item {
+    width: 100%;
+}
+
+.phunk-image {
+    width: 100%;
+    height: auto;
+}
+
+.labels-wrapper {
+    padding: 1rem 0.2rem;
+}
+
+.phunk-label-detail {
+    font-size: 1.4rem;
+    color: #000;
+    text-align: center;
+    font-weight: 700;
+}
+
+.phunk-label-value {
+    font-size: 1rem;
+    color: #000;
+    text-align: center;
+}
