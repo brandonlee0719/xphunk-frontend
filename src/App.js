@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 import TraitSelector from './TraitSelector';
 import traits from './constant';
@@ -12,6 +13,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       isShowFilter: false,
+      isShowConnectWallet: false,
       isLoaging: false,
       params: {},
       selected_traits: [],
@@ -65,14 +67,18 @@ class App extends React.Component {
       "traitType": selected_traits[11] === "Type" ? null : selected_traits[11],
     };
     const res = await axios.get(BASE_URL, { params });
-    console.log(res.data);
     this.setState({ data: res.data, isLoading: false });
   }
 
+  handleShowHideWallet = () => {
+    this.setState({ isShowConnectWallet: !this.state.isShowConnectWallet });
+  }
+  handleConnectWallet = () => {
+    console.log('connect wallet....');
+  }
+
   render() {
-    const { isLoading, isShowFilter, data } = this.state;
-    const temp_data = new Array(100);
-    console.log(isLoading);
+    const { isShowFilter, isShowConnectWallet, data } = this.state;
     return (
       <div className="App" >
         <div className="post-header-wrapper">
@@ -93,7 +99,7 @@ class App extends React.Component {
 
         <div className="listings-wrapper">
           {data.map((item, index) => (
-            <a key={index} className="phunk-item-link" href="/">
+            <Link key={index} className="phunk-item-link" to={`/details/${item.name.split('#')[1]}`} state={{ data: item }}>
               <div className="phunk-item">
                 <img className="phunk-image" alt='' src={item.image} />
               </div>
@@ -102,8 +108,14 @@ class App extends React.Component {
                 <div className="phunk-label-value">0.03E</div>
                 <div className="phunk-label-value">$962.8</div>
               </div>
-            </a>
+            </Link>
           ))}
+        </div>
+
+        <div className={isShowConnectWallet ? "connect-wallet" : "connect-wallet hide-modal"}>
+          <h2 className="hide-show" onClick={this.handleShowHideWallet}>{isShowConnectWallet ? "hide" : "show"}</h2>
+          <h1>Ethereum Available</h1>
+          <h2 onClick={this.handleConnectWallet}> Connect to MetaMask </h2>
         </div>
       </div>
     );
