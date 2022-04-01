@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useWeb3React } from "@web3-react/core"
+import { useWeb3React } from "@web3-react/core";
 import axios from 'axios';
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
@@ -44,16 +44,17 @@ function App(props) {
   }, []);
 
   async function connect() {
+    console.log("connect------------");
     try {
       await activate(injected)
       localStorage.setItem('isWalletConnected', true)
     } catch (ex) {
-      console.log("------------");
       console.log(ex)
     }
   }
 
   async function disconnect() {
+    console.log("disconnect------------");
     try {
       deactivate()
       localStorage.setItem('isWalletConnected', false)
@@ -105,19 +106,6 @@ function App(props) {
     setShowConnectWallet(!isShowConnectWallet);
   };
 
-  const handleConnectWallet = async () => {
-    // console.log('connect wallet....');
-    // if (localStorage?.getItem('isWalletConnected') === 'true') {
-    //   try {
-    //     await activate(injected)
-    //     localStorage.setItem('isWalletConnected', true)
-    //   } catch (ex) {
-    //     console.log(ex)
-    //   }
-    // }
-    connect();
-  };
-
   return (
     isLoading ? <></> : <div className="App" >
       <div className="post-header-wrapper">
@@ -153,8 +141,11 @@ function App(props) {
 
       <div className={isShowConnectWallet ? "connect-wallet" : "connect-wallet hide-modal"}>
         <h2 className="hide-show" onClick={handleShowHideWallet}>{isShowConnectWallet ? "hide" : "show"}</h2>
-        <h1>Ethereum Available</h1>
-        <h2 onClick={handleConnectWallet}> Connect to MetaMask </h2>
+        <h1>{active ? "Connected To Ethereum" : "Ethereum Available"}</h1>
+        <h2>{active && account}</h2>
+        {active && <h2 className='connect-button' onClick={disconnect}>Disconnect</h2>}
+        {!active && <h2 className='connect-button' onClick={connect}>Connect to MetaMask</h2>}
+
       </div>
     </div>
   );

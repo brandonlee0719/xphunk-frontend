@@ -110,7 +110,7 @@ h2 {
 }
 
 .phunk-item-link-title {
-    padding:0 1rem;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+    padding: 0 1rem;
     text-decoration: none;
 }
 
@@ -236,4 +236,44 @@ h2 {
 .transaction-wrapper {
     width: 100%;
     overflow-y: scroll
+}
+
+.connect-button {
+    cursor: pointer;
+}
+
+.actions-wrapper {
+    padding: 2rem 0 4rem;
+}
+
+button {
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    -webkit-appearance: none;
+    outline: none;
+    box-shadow: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    background-color: #ff04b4;
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    font-size: 1.6rem;
+    transition-property: all;
+    transition-duration: .2s;
+    transition-timing-function: cubic-bezier(.785,.135,.15,.86);
+}
+
+.button {
+    display: block;
+    text-align: left;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    font-size: 1.5rem;
+    width: 100%;
+    max-width: 46rem;
 }

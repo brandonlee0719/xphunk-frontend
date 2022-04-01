@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { useWeb3React } from "@web3-react/core";
+import { injected } from "./connectors";
 
 const BASE_URL = 'http://localhost:8000/api';
 
@@ -11,6 +13,7 @@ function Detail() {
   const [traitsCount, setTraitsCount] = useState(new Array(20));
   const [isLoading, setLoading] = useState(false);
   const { data } = location.state;
+  const { active, account, library, connector, activate, deactivate } = useWeb3React()
 
   useEffect(() => {
     (async () => {
@@ -29,8 +32,24 @@ function Detail() {
     })();
   }, []);
 
-  function handleConnectWallet() {
-    console.log("wallet connect....");
+  async function connect() {
+    console.log("connect------------");
+    try {
+      await activate(injected)
+      localStorage.setItem('isWalletConnected', true)
+    } catch (ex) {
+      console.log(ex)
+    }
+  }
+
+  async function disconnect() {
+    console.log("disconnect------------");
+    try {
+      deactivate()
+      localStorage.setItem('isWalletConnected', false)
+    } catch (ex) {
+      console.log(ex)
+    }
   }
 
   async function getFilterCount(index, value) {
@@ -140,17 +159,20 @@ function Detail() {
           <div className="actions-wrapper">
             <p className="pink">Connect a web3 wallet to interact with this item</p>
           </div>
-
+          {active && <div className="actions-wrapper">
+            <button className="button"> Buy </button>
+            <button className="button"> Place Bid </button>
+          </div>}
         </div>
       </div>
 
 
       <div className={isShowConnectWallet ? "connect-wallet" : "connect-wallet hide-modal"}>
-        <h2 className="hide-show" onClick={() => handleShowHideWallet(!isShowConnectWallet)}>
-          {isShowConnectWallet ? "hide" : "show"}
-        </h2>
-        <h1>Ethereum Available</h1>
-        <h2 onClick={() => handleConnectWallet()}> Connect to MetaMask </h2>
+        <h2 className="hide-show" onClick={handleShowHideWallet}>{isShowConnectWallet ? "hide" : "show"}</h2>
+        <h1>{active ? "Connected To Ethereum" : "Ethereum Available"}</h1>
+        <h2>{active && account}</h2>
+        {active && <h2 className='connect-button' onClick={disconnect}>Disconnect</h2>}
+        {!active && <h2 className='connect-button' onClick={connect}>Connect to MetaMask</h2>}
       </div>
     </div>
   );
