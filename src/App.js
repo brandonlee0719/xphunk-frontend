@@ -1,125 +1,163 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useWeb3React } from "@web3-react/core"
 import axios from 'axios';
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
 
+import { injected } from "./connectors";
+import { fetchData } from "./redux/data/dataActions";
 import TraitSelector from './TraitSelector';
 import traits from './constant';
 import './App.css';
 
-const BASE_URL = 'http://192.168.115.63:8000/api';
+const BASE_URL = 'http://localhost:8000/api';
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isShowFilter: false,
-      isShowConnectWallet: false,
-      isLoaging: false,
-      params: {},
-      selected_traits: [],
-      data: [],
-      isLoading: false
-    };
-  }
+function App(props) {
+  const [isShowFilter, setShowFilter] = useState(false);
+  const [isShowConnectWallet, setShowConnectWallet] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const [selectedTraits, setSelectedTraits] = useState([]);
+  const [data, setData] = useState(false);
+  const { active, account, library, connector, activate, deactivate } = useWeb3React()
 
-  componentDidMount() {
+  useEffect(() => {
+    const connectWalletOnPageLoad = async () => {
+      if (localStorage?.getItem('isWalletConnected') === 'true') {
+        try {
+          await activate(injected)
+          localStorage.setItem('isWalletConnected', true)
+        } catch (ex) {
+          console.log(ex)
+        }
+      }
+    }
+    connectWalletOnPageLoad()
+  }, []);
+
+  useEffect(() => {
     var temp_trait = [];
     for (var i = 0; i < traits.length; i++) {
       temp_trait.push(traits[i].trait_type);
     }
-    this.setState({ selected_traits: temp_trait });
-    this.handleFilterData();
+    setSelectedTraits(temp_trait)
+    handleFilterData();
+  }, []);
+
+  async function connect() {
+    try {
+      await activate(injected)
+      localStorage.setItem('isWalletConnected', true)
+    } catch (ex) {
+      console.log("------------");
+      console.log(ex)
+    }
   }
 
-  handleTraitChange = (e, index) => {
-    var temp_trait = this.state.selected_traits;
+  async function disconnect() {
+    try {
+      deactivate()
+      localStorage.setItem('isWalletConnected', false)
+    } catch (ex) {
+      console.log(ex)
+    }
+  }
+
+  const handleTraitChange = (e, index) => {
+    var temp_trait = selectedTraits;
     temp_trait[index] = e.target.value;
-    this.setState({ selected_traits: temp_trait });
-    this.handleFilterData();
-  }
+    setSelectedTraits(temp_trait);
+    handleFilterData();
+  };
 
-  handleTraitClear = (index) => {
-    var temp_trait = this.state.selected_traits;
+  const handleTraitClear = (index) => {
+    var temp_trait = selectedTraits;
     temp_trait[index] = traits[index].trait_type;
-    this.setState({ selected_traits: temp_trait });
-    this.handleFilterData();
-  }
+    setSelectedTraits(temp_trait);
+    handleFilterData();
+  };
 
-  handleSortButton = () => {
-    this.setState({ isShowFilter: !this.state.isShowFilter });
-  }
+  const handleSortButton = () => {
+    setShowFilter(!isShowFilter);
+  };
 
-  handleFilterData = async () => {
-    this.setState({ isLoading: true });
-    const { selected_traits } = this.state;
+  const handleFilterData = async () => {
+    setLoading(true);
     const params = {
-      "traitAttributeCount": selected_traits[0] === "Attribute Count" ? null : selected_traits[0],
-      "traitBlemish": selected_traits[1] === "Blemish" ? null : selected_traits[1],
-      "traitEar": selected_traits[2] === "Ear" ? null : selected_traits[2],
-      "traitEyes": selected_traits[3] === "Eyes" ? null : selected_traits[3],
-      "traitFacialHair": selected_traits[4] === "Facial Hair" ? null : selected_traits[4],
-      "traitHair": selected_traits[5] === "Hair" ? null : selected_traits[5],
-      "traitMouth": selected_traits[6] === "Mouth" ? null : selected_traits[6],
-      "traitMouthProp": selected_traits[7] === "Mouth Prop" ? null : selected_traits[7],
-      "traitNeckAccessory": selected_traits[8] === "Neck Accessory" ? null : selected_traits[8],
-      "traitNose": selected_traits[9] === "Nose" ? null : selected_traits[9],
-      "traitSkinTone": selected_traits[10] === "Skin Tone" ? null : selected_traits[10],
-      "traitType": selected_traits[11] === "Type" ? null : selected_traits[11],
+      "traitAttributeCount": selectedTraits[0] === "Attribute Count" ? null : selectedTraits[0],
+      "traitBlemish": selectedTraits[1] === "Blemish" ? null : selectedTraits[1],
+      "traitEar": selectedTraits[2] === "Ear" ? null : selectedTraits[2],
+      "traitEyes": selectedTraits[3] === "Eyes" ? null : selectedTraits[3],
+      "traitFacialHair": selectedTraits[4] === "Facial Hair" ? null : selectedTraits[4],
+      "traitHair": selectedTraits[5] === "Hair" ? null : selectedTraits[5],
+      "traitMouth": selectedTraits[6] === "Mouth" ? null : selectedTraits[6],
+      "traitMouthProp": selectedTraits[7] === "Mouth Prop" ? null : selectedTraits[7],
+      "traitNeckAccessory": selectedTraits[8] === "Neck Accessory" ? null : selectedTraits[8],
+      "traitNose": selectedTraits[9] === "Nose" ? null : selectedTraits[9],
+      "traitSkinTone": selectedTraits[10] === "Skin Tone" ? null : selectedTraits[10],
+      "traitType": selectedTraits[11] === "Type" ? null : selectedTraits[11],
     };
     const res = await axios.get(BASE_URL, { params });
-    this.setState({ data: res.data, isLoading: false });
-  }
+    setData(res.data);
+    setLoading(false);
+  };
 
-  handleShowHideWallet = () => {
-    this.setState({ isShowConnectWallet: !this.state.isShowConnectWallet });
-  }
-  handleConnectWallet = () => {
-    console.log('connect wallet....');
-  }
+  const handleShowHideWallet = () => {
+    setShowConnectWallet(!isShowConnectWallet);
+  };
 
-  render() {
-    const { isShowFilter, isShowConnectWallet, data } = this.state;
-    return (
-      <div className="App" >
-        <div className="post-header-wrapper">
-          <h1>xPhunks for Sale</h1>
-          <h2>{data.length}/10000 xPhunks Total</h2>
-        </div>
-        <div className="filter">
-          <button className="filter-button" onClick={this.handleSortButton}>
-            {isShowFilter ? "Hide Filters" : "Show Filters"}
-          </button>
-        </div>
+  const handleConnectWallet = async () => {
+    // console.log('connect wallet....');
+    // if (localStorage?.getItem('isWalletConnected') === 'true') {
+    //   try {
+    //     await activate(injected)
+    //     localStorage.setItem('isWalletConnected', true)
+    //   } catch (ex) {
+    //     console.log(ex)
+    //   }
+    // }
+    connect();
+  };
 
-        {isShowFilter && <TraitSelector
-          selected_traits={this.state.selected_traits}
-          handleTraitChange={this.handleTraitChange}
-          handleTraitClear={this.handleTraitClear}
-        />}
-
-        <div className="listings-wrapper">
-          {data.map((item, index) => (
-            <Link key={index} className="phunk-item-link" to={`/details/${item.name.split('#')[1]}`} state={{ data: item }}>
-              <div className="phunk-item">
-                <img className="phunk-image" alt='' src={item.image} />
-              </div>
-              <div className="labels-wrapper">
-                <div className="phunk-label-detail">{item.name.split(' ')[1]}</div>
-                <div className="phunk-label-value">0.03E</div>
-                <div className="phunk-label-value">$962.8</div>
-              </div>
-            </Link>
-          ))}
-        </div>
-
-        <div className={isShowConnectWallet ? "connect-wallet" : "connect-wallet hide-modal"}>
-          <h2 className="hide-show" onClick={this.handleShowHideWallet}>{isShowConnectWallet ? "hide" : "show"}</h2>
-          <h1>Ethereum Available</h1>
-          <h2 onClick={this.handleConnectWallet}> Connect to MetaMask </h2>
-        </div>
+  return (
+    isLoading ? <></> : <div className="App" >
+      <div className="post-header-wrapper">
+        <h1>xPhunks for Sale</h1>
+        <h2>{data.length}/10000 xPhunks Total</h2>
       </div>
-    );
-  }
+      <div className="filter">
+        <button className="filter-button" onClick={handleSortButton}>
+          {isShowFilter ? "Hide Filters" : "Show Filters"}
+        </button>
+      </div>
+
+      {isShowFilter && <TraitSelector
+        selectedTraits={selectedTraits}
+        handleTraitChange={handleTraitChange}
+        handleTraitClear={handleTraitClear}
+      />}
+
+      <div className="listings-wrapper">
+        {data && data.map((item, index) => (
+          <Link key={index} className="phunk-item-link" to={`/details/${item.name.split('#')[1]}`} state={{ data: item }}>
+            <div className="phunk-item">
+              <img className="phunk-image" alt='' src={item.image} />
+            </div>
+            <div className="labels-wrapper">
+              <div className="phunk-label-detail">{item.name.split(' ')[1]}</div>
+              <div className="phunk-label-value">0.03E</div>
+              <div className="phunk-label-value">$962.8</div>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      <div className={isShowConnectWallet ? "connect-wallet" : "connect-wallet hide-modal"}>
+        <h2 className="hide-show" onClick={handleShowHideWallet}>{isShowConnectWallet ? "hide" : "show"}</h2>
+        <h1>Ethereum Available</h1>
+        <h2 onClick={handleConnectWallet}> Connect to MetaMask </h2>
+      </div>
+    </div>
+  );
 }
 
 export default App;

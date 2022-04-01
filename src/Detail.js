@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
-const BASE_URL = 'http://192.168.115.63:8000/api';
+const BASE_URL = 'http://localhost:8000/api';
 
 function Detail() {
   const { id } = useParams();
@@ -11,22 +11,22 @@ function Detail() {
   const [traitsCount, setTraitsCount] = useState(new Array(20));
   const [isLoading, setLoading] = useState(false);
   const { data } = location.state;
-  console.log(data);
-  console.log("from==================>");
 
   useEffect(() => {
-    setLoading(true);
-    data.traitType != null && getFilterCount(11, data.traitType);
-    data.traitBlemish != null && getFilterCount(1, data.traitBlemish);
-    data.traitEar != null && getFilterCount(2, data.traitEar);
-    data.traitEyes != null && getFilterCount(3, data.traitEyes);
-    data.traitFacialHair != null && getFilterCount(4, data.traitFacialHair);
-    data.traitHair != null && getFilterCount(5, data.traitHair);
-    data.traitMouth != null && getFilterCount(6, data.traitMouth);
-    data.traitMouthProp != null && getFilterCount(7, data.traitMouthProp);
-    data.traitNeckAccessory != null && getFilterCount(8, data.traitNeckAccessory);
-    data.traitNose != null && getFilterCount(9, data.traitNose);
-    setLoading(false);
+    (async () => {
+      setLoading(true);
+      data.traitType != null && await getFilterCount(11, data.traitType);
+      data.traitBlemish != null && await getFilterCount(1, data.traitBlemish);
+      data.traitEar != null && await getFilterCount(2, data.traitEar);
+      data.traitEyes != null && await getFilterCount(3, data.traitEyes);
+      data.traitFacialHair != null && await getFilterCount(4, data.traitFacialHair);
+      data.traitHair != null && await getFilterCount(5, data.traitHair);
+      data.traitMouth != null && await getFilterCount(6, data.traitMouth);
+      data.traitMouthProp != null && await getFilterCount(7, data.traitMouthProp);
+      data.traitNeckAccessory != null && await getFilterCount(8, data.traitNeckAccessory);
+      data.traitNose != null && await getFilterCount(9, data.traitNose);
+      setLoading(false);
+    })();
   }, []);
 
   function handleConnectWallet() {
@@ -51,15 +51,19 @@ function Detail() {
     const res = await axios.get(`${BASE_URL}/count`, { params });
     const temp_traitsCount = traitsCount;
     temp_traitsCount[index] = res.data;
+    console.log("-------------");
+    console.log(temp_traitsCount);
+
     setTraitsCount(temp_traitsCount);
   }
 
   const wallet = '0x7E7...51E1B';
 
-  console.log("data::::::::::");
-  console.log(data);
+  console.log("================", isLoading);
+  console.log(traitsCount);
+
   return (
-    isLoading ? <></> : <div className="App" >
+    isLoading ? <div></div> : <div className="App" >
       <div className="post-header-wrapper">
         <div className="breadcrumb">
           <Link className="phunk-item-link-title" to="/">

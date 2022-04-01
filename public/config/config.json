@@ -1,0 +1,18 @@
+{
+  "CONTRACT_ADDRESS": "0x20c69deA2588B5dCE709D2F8B06ECf49E81cA81E",
+  "SCAN_LINK": "https://ropsten.etherscan.io/address/0x20c69deA2588B5dCE709D2F8B06ECf49E81cA81E",
+  "NETWORK": {
+    "NAME": "Ropsten",
+    "SYMBOL": "Ropsten",
+    "ID": 3
+  },
+  "NFT_NAME": "Testing",
+  "SYMBOL": "TEST",
+  "MAX_SUPPLY": 50,
+  "WEI_COST": 40000000000000000,
+  "DISPLAY_COST": 0.015,
+  "GAS_LIMIT": 285000,
+  "MARKETPLACE": "SquidBears",
+  "MARKETPLACE_LINK": "https://squidbears.com",
+  "SHOW_BACKGROUND": false
+}
