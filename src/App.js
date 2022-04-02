@@ -10,7 +10,7 @@ import TraitSelector from './TraitSelector';
 import traits from './constant';
 import './App.css';
 
-const BASE_URL = 'http://localhost:8000/api';
+const BASE_URL = 'http://localhost:5000/api';
 
 function App(props) {
   const [isShowFilter, setShowFilter] = useState(false);
