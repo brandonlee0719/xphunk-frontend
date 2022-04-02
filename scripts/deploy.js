@@ -11,7 +11,7 @@ async function main() {
     }
   
     const Market = await ethers.getContractFactory("NFTMarket");
-    const market = await Market.deploy();
+    const market = await Market.deploy("0xadD19b9B060A07484F31Ed2cc837e8dedf0CF6b6");
     await market.deployed();
   
     console.log("Market address:", market.address);
@@ -26,7 +26,7 @@ async function main() {
   
     const contractsDir = path.resolve(
       process.cwd(),
-      '../constants'
+      'constants'
     );
   
     if (!fs.existsSync(contractsDir)) {
@@ -44,8 +44,6 @@ async function main() {
       contractsDir + "/ABI.json",
       JSON.stringify(MerketArtifact, null, 2)
     );
-  
-    console.log('MarketAddress', market.address);
   }
 
   main()
