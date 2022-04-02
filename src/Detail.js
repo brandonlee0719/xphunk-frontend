@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useWeb3React } from "@web3-react/core";
 import { injected } from "./connectors";
 
-const BASE_URL = 'http://localhost:8000/api';
+const BASE_URL = 'http://localhost:5000/api';
 
 function Detail() {
   const { id } = useParams();
