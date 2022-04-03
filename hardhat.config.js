@@ -20,8 +20,8 @@ module.exports = {
       url: `https://kovan.infura.io/v3/${infuraId}`,
       accounts: [privateKey]
     },
-    ropsten: {
-      url: `https://ropsten.infura.io/v3/${infuraId}`,
+    rinkeby: {
+      url: `https://rinkeby.infura.io/v3/${infuraId}`,
       accounts: [privateKey]
     },
   },

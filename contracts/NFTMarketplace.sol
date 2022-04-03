@@ -12,6 +12,7 @@ contract NFTMarket is ReentrancyGuard {
     Counters.Counter private _itemsSold;
 
     uint256 listingFee = 20; // 2%
+    uint256 sellPrice = 0.4 ether;
     address payable owner;
 
     mapping(uint256 => MarketItem) private idToMarketItem;
@@ -104,18 +105,12 @@ contract NFTMarket is ReentrancyGuard {
     /* Transfers ownership of the item, as well as funds between parties */
     function createMarketSale(
       address nftContract,
-      uint256 itemId
+      uint256 tokenId
       ) public payable nonReentrant {
-        uint price = idToMarketItem[itemId].price;
-        uint tokenId = idToMarketItem[itemId].tokenId;
-        require(msg.value == price, "Please submit the asking price in order to complete the purchase");
+        require(msg.value == sellPrice, "Please submit the asking sellPrice in order to complete the purchase");
 
-        idToMarketItem[itemId].seller.transfer(msg.value);
         IERC721(nftContract).transferFrom(address(this), msg.sender, tokenId);
-        idToMarketItem[itemId].owner = payable(msg.sender);
-        idToMarketItem[itemId].sold = true;
-        _itemsSold.increment();
-        payable(owner).transfer((price * listingFee) / 1000);
+        payable(owner).transfer((sellPrice * listingFee) / 1000);
     }
 
     /* Returns all unsold market items */
