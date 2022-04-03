@@ -3,6 +3,8 @@ import { Link, useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useWeb3React } from "@web3-react/core";
 import { injected } from "./connectors";
+import { MarketplaceAddress, MarketplaceABI } from "./redux/constants/marketAddress";
+import Web3 from 'web3'
 
 const BASE_URL = 'http://localhost:5000/api';
 
@@ -80,6 +82,16 @@ function Detail() {
 
   console.log("================", isLoading);
   console.log(traitsCount);
+
+  const web3 = new Web3(window.ethereum)
+  const marketplaceContract = new web3.eth.Contract(MarketplaceABI, MarketplaceAddress);
+  const nftAddress = "0x71eb5c179ceb640160853144cbb8df5bd24ab5cc";
+  async function buy() {
+    
+    const transaction = await marketplaceContract.methods
+          .createMarketSale(nftAddress, data.id)
+          .send({ from: account });
+  }
 
   return (
     isLoading ? <div></div> : <div className="App" >
@@ -160,7 +172,7 @@ function Detail() {
             <p className="pink">Connect a web3 wallet to interact with this item</p>
           </div>
           {active && <div className="actions-wrapper">
-            <button className="button"> Buy </button>
+            <button className="button" onClick={buy}> Buy </button>
             <button className="button"> Place Bid </button>
           </div>}
         </div>
