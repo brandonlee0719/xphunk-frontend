@@ -70,6 +70,7 @@ function Detail() {
       "traitType": index === 11 ? value : null,
     };
     const res = await axios.get(`${BASE_URL}/count`, { params });
+    console.log("^^^^^^^^^^^^^^^RES", res);
     const temp_traitsCount = traitsCount;
     temp_traitsCount[index] = res.data;
     console.log("-------------");
@@ -89,8 +90,6 @@ function Detail() {
   const nftAddress = "0x71eb5c179ceb640160853144cbb8df5bd24ab5cc";
 
   async function buy() {
-  console.log(MarketplaceABI, MarketplaceAddress)
-
     const transaction = await marketplaceContract.methods
           .createMarketSale(nftAddress, 5)
           .send({ from: account, gas: 1000000, gasPrice: 20000000000, value: 400000000000000000 });
@@ -176,7 +175,6 @@ function Detail() {
           </div>
           {active && <div className="actions-wrapper">
             <button className="button" onClick={buy}> Buy </button>
-            <button className="button"> Place Bid </button>
           </div>}
         </div>
       </div>
