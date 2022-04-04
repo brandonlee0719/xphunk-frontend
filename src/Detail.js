@@ -84,13 +84,16 @@ function Detail() {
   console.log(traitsCount);
 
   const web3 = new Web3(window.ethereum)
+
   const marketplaceContract = new web3.eth.Contract(MarketplaceABI, MarketplaceAddress);
   const nftAddress = "0x71eb5c179ceb640160853144cbb8df5bd24ab5cc";
+
   async function buy() {
-    
+  console.log(MarketplaceABI, MarketplaceAddress)
+
     const transaction = await marketplaceContract.methods
-          .createMarketSale(nftAddress, data.id)
-          .send({ from: account });
+          .createMarketSale(nftAddress, 5)
+          .send({ from: account, gas: 1000000, gasPrice: 20000000000, value: 400000000000000000 });
   }
 
   return (

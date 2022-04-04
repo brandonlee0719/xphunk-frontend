@@ -1,4 +1,4 @@
-export const MarketplaceAddress = "0xA50Df3f23F7fA56247320658a57578f91dABd1Ea";
+export const MarketplaceAddress = "0x4A2c206eDDF320c3579Eb2595e56E7D01eB04dbC";
 export const MarketplaceABI = [
   {
     "inputs": [
@@ -92,7 +92,7 @@ export const MarketplaceABI = [
       },
       {
         "internalType": "uint256",
-        "name": "itemId",
+        "name": "tokenId",
         "type": "uint256"
       }
     ],
