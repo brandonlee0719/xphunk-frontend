@@ -2,6 +2,7 @@
 // yours, or create new ones.
 async function main() {
     // This is just a convenience check
+    // eslint-disable-next-line no-undef
     if (network.name === "hardhat") {
       console.warn(
         "You are trying to deploy a contract to the Hardhat Network, which" +
@@ -10,6 +11,7 @@ async function main() {
       );
     }
   
+    // eslint-disable-next-line no-undef
     const Market = await ethers.getContractFactory("NFTMarket");
     const market = await Market.deploy("0xadD19b9B060A07484F31Ed2cc837e8dedf0CF6b6");
     await market.deployed();
@@ -38,6 +40,7 @@ async function main() {
         JSON.stringify({ NFTMarket: market.address }, undefined, 2)
     );
 
+    // eslint-disable-next-line no-undef
     const MerketArtifact = artifacts.readArtifactSync("NFTMarket");
   
     fs.writeFileSync(
