@@ -14,6 +14,7 @@ function Detail() {
   const [isShowConnectWallet, handleShowHideWallet] = useState(false);
   const [traitsCount, setTraitsCount] = useState(new Array(20));
   const [isLoading, setLoading] = useState(false);
+  const [ownerAddress, setOwnerAddress] = useState("");
   const { data } = location.state;
   const { active, account, library, connector, activate, deactivate } = useWeb3React()
 
@@ -30,12 +31,26 @@ function Detail() {
       data.traitMouthProp != null && await getFilterCount(7, data.traitMouthProp);
       data.traitNeckAccessory != null && await getFilterCount(8, data.traitNeckAccessory);
       data.traitNose != null && await getFilterCount(9, data.traitNose);
+
+
+      const tokenName = data.name;
+      const tokenNameArray = tokenName.split("#");
+      const tokenId = tokenNameArray[tokenNameArray.length - 1];
+      const res = await axios.get(`https://api.opensea.io/api/v1/asset/0x71eb5c179ceb640160853144cbb8df5bd24ab5cc/10004/?include_orders=false`);
+
+      if (res?.data.owner.address) {
+        setOwnerAddress(res.data.owner.address)
+
+          if (res?.data.asset_contract.payout_address) {
+            setOwnerAddress(res?.data.asset_contract.payout_address)
+          }
+      }
+
       setLoading(false);
     })();
   }, []);
 
   async function connect() {
-    console.log("connect------------");
     try {
       await activate(injected)
       localStorage.setItem('isWalletConnected', true)
@@ -45,7 +60,6 @@ function Detail() {
   }
 
   async function disconnect() {
-    console.log("disconnect------------");
     try {
       deactivate()
       localStorage.setItem('isWalletConnected', false)
@@ -70,19 +84,12 @@ function Detail() {
       "traitType": index === 11 ? value : null,
     };
     const res = await axios.get(`${BASE_URL}/count`, { params });
-    console.log("^^^^^^^^^^^^^^^RES", res);
     const temp_traitsCount = traitsCount;
     temp_traitsCount[index] = res.data;
-    console.log("-------------");
-    console.log(temp_traitsCount);
 
     setTraitsCount(temp_traitsCount);
   }
 
-  const wallet = '0x7E7...51E1B';
-
-  console.log("================", isLoading);
-  console.log(traitsCount);
 
   const web3 = new Web3(window.ethereum)
 
@@ -90,6 +97,7 @@ function Detail() {
   const nftAddress = "0x71eb5c179ceb640160853144cbb8df5bd24ab5cc";
 
   async function buy() {
+    
     const transaction = await marketplaceContract.methods
           .createMarketSale(nftAddress, 5)
           .send({ from: account, gas: 1000000, gasPrice: 20000000000, value: 400000000000000000 });
@@ -162,8 +170,8 @@ function Detail() {
           <div className="market-status">
             <h2>Current Market Status</h2>
             <p>This phunk is currently owned by address <a
-              href="https://etherscan.io/address/0xF32C74cA26465DCe91dF6Eed7021d6dC110E3BA5">
-              <span className="pink">{wallet}</span>
+              href={"https://etherscan.io/address/" + ownerAddress}>
+              <span className="pink">{ownerAddress.slice(0, 5) + "..." + ownerAddress.substr(ownerAddress.length - 4)}</span>
             </a>.</p>
             <p>This phunk is currently for sale for <span className="pink">0.4 ETH</span>
               <span className="bold"> ()</span>.
