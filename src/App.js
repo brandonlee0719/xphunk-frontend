@@ -42,7 +42,7 @@ function App(props) {
     }
     setSelectedTraits(temp_trait)
     handleFilterData();
-    
+
   }, []);
 
   async function connect() {
@@ -134,7 +134,7 @@ function App(props) {
             </div>
             <div className="labels-wrapper">
               <div className="phunk-label-detail">{item.name.split(' ')[1]}</div>
-              <div className="phunk-label-value">0.03E</div>
+              <div className="phunk-label-value">0.007E</div>
               <div className="phunk-label-value">$962.8</div>
             </div>
           </Link>

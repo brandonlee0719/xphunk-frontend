@@ -15,7 +15,7 @@ function Detail() {
   const [traits, setTraits] = useState(new Array(20));
   const [isLoading, setLoading] = useState(false);
   const [ownerAddress, setOwnerAddress] = useState("");
-  const [price, setPrice] = useState("0.004");
+  const [price, setPrice] = useState("0.007");
   const [imageUrl, setImageUrl] = useState("");
   const { data } = location.state;
   const { active, account, library, connector, activate, deactivate } = useWeb3React()
