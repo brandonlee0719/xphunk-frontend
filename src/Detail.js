@@ -11,7 +11,7 @@ const BASE_URL = 'http://localhost:5000/api';
 function Detail() {
   const { id } = useParams();
   const location = useLocation()
-  const [isShowConnectWallet, handleShowHideWallet] = useState(false);
+  const [isShowConnectWallet, setIsShowConnectWallet] = useState(false);
   const [traits, setTraits] = useState(new Array(20));
   const [isLoading, setLoading] = useState(false);
   const [ownerAddress, setOwnerAddress] = useState("");
@@ -20,6 +20,9 @@ function Detail() {
   const { data } = location.state;
   const { active, account, library, connector, activate, deactivate } = useWeb3React()
   const web3 = new Web3(window.ethereum)
+  function handleShowHideWallet () {
+    setIsShowConnectWallet(!isShowConnectWallet);
+  }
 
   useEffect(() => {
     (async () => {
@@ -79,7 +82,7 @@ function Detail() {
     
     const transaction = await marketplaceContract.methods
           .createMarketSale(nftAddress, 5)
-          .send({ from: account, gas: 1000000, gasPrice: 20000000000, value: 400000000000000000 });
+          .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price, value: web3.utils.toWei(price, "ether") });
   }
 
   return (
