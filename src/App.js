@@ -10,7 +10,7 @@ import TraitSelector from './TraitSelector';
 import traits from './constant';
 import './App.css';
 
-const BASE_URL = 'http://localhost:5000/api';
+const BASE_URL = 'https://xphunk-backend.herokuapp.com/api';
 
 function App(props) {
   const [isShowFilter, setShowFilter] = useState(false);
@@ -34,13 +34,15 @@ function App(props) {
     connectWalletOnPageLoad()
   }, []);
 
-  useEffect(() => {
+  useEffect(async () => {
+
     var temp_trait = [];
     for (var i = 0; i < traits.length; i++) {
       temp_trait.push(traits[i].trait_type);
     }
     setSelectedTraits(temp_trait)
     handleFilterData();
+
   }, []);
 
   async function connect() {
@@ -132,7 +134,7 @@ function App(props) {
             </div>
             <div className="labels-wrapper">
               <div className="phunk-label-detail">{item.name.split(' ')[1]}</div>
-              <div className="phunk-label-value">0.03E</div>
+              <div className="phunk-label-value">0.007E</div>
               <div className="phunk-label-value">$962.8</div>
             </div>
           </Link>
