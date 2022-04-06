@@ -109,7 +109,7 @@ function App(props) {
   };
 
   return (
-    isLoading ? <></> : <div className="App" >
+    <div className="App" >
       <div className="post-header-wrapper">
         <h1>xPhunks for Sale</h1>
         <h2>{data.length}/10000 xPhunks Total</h2>
@@ -125,19 +125,22 @@ function App(props) {
         handleTraitChange={handleTraitChange}
         handleTraitClear={handleTraitClear}
       />}
-
-      <div className="listings-wrapper">
-        {data && data.map((item, index) => (
-          <Link key={index} className="phunk-item-link" to={`/details/${item.name.split('#')[1]}`} state={{ data: item }}>
-            <div className="phunk-item">
-              <img className="phunk-image" alt='' src={item.image} />
-            </div>
-            <div className="labels-wrapper">
-              <div className="phunk-label-detail">{item.name.split(' ')[1]}</div>
-            </div>
-          </Link>
-        ))}
-      </div>
+      {
+        isLoading ? <></> : 
+        
+        <div className="listings-wrapper">
+          {data && data.map((item, index) => (
+            <Link key={index} className="phunk-item-link" to={`/details/${item.name.split('#')[1]}`} state={{ data: item }}>
+              <div className="phunk-item">
+                <img className="phunk-image" alt='' src={item.image} />
+              </div>
+              <div className="labels-wrapper">
+                <div className="phunk-label-detail">{item.name.split(' ')[1]}</div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      }
 
       <div className={isShowConnectWallet ? "connect-wallet" : "connect-wallet hide-modal"}>
         <h2 className="hide-show" onClick={handleShowHideWallet}>{isShowConnectWallet ? "hide" : "show"}</h2>
