@@ -6,8 +6,6 @@ import { injected } from "./connectors";
 import { MarketplaceAddress, MarketplaceABI } from "./redux/constants/marketAddress";
 import Web3 from 'web3'
 
-const BASE_URL = 'http://localhost:5000/api';
-
 function Detail() {
   const { id } = useParams();
   const location = useLocation()
