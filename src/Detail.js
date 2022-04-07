@@ -74,13 +74,14 @@ function Detail() {
 
 
   const marketplaceContract = new web3.eth.Contract(MarketplaceABI, MarketplaceAddress);
-  const nftAddress = "0x71eb5c179ceb640160853144cbb8df5bd24ab5cc";
 
   async function buy() {
     
     const transaction = await marketplaceContract.methods
-          .createMarketSale(nftAddress, 5)
+          .buyPhunk(id)
           .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price, value: web3.utils.toWei(price, "ether") });
+
+    transaction.await();
   }
 
   return (
