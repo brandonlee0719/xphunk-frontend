@@ -42,6 +42,7 @@ function App(props) {
     }
     setSelectedTraits(temp_trait)
     handleFilterData();
+    console.log(data);
 
   }, []);
 
