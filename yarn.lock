@@ -13105,6 +13105,11 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.npmjs.org/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
+react-pure-modal@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-pure-modal/-/react-pure-modal-2.1.0.tgz#cf2860620614554f3a4f69c582c3265fe3575918"
+  integrity sha512-GM3rK1MsNaflci5zGAMh0BJhjxjnsjyE1nMLfmjG6LLdAm4Re9QZBC4utc3Ek+wJbIJRFwW5hwS25wWWHIIloA==
+
 react-redux@^7.2.6:
   version "7.2.6"
   resolved "https://registry.npmjs.org/react-redux/-/react-redux-7.2.6.tgz"

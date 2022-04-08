@@ -5,6 +5,8 @@ import { useWeb3React } from "@web3-react/core";
 import { injected } from "./connectors";
 import { MarketplaceAddress, MarketplaceABI } from "./redux/constants/marketAddress";
 import Web3 from 'web3'
+import PureModal from 'react-pure-modal';
+import 'react-pure-modal/dist/react-pure-modal.min.css';
 
 function Detail() {
   const { id } = useParams();
@@ -15,9 +17,16 @@ function Detail() {
   const [ownerAddress, setOwnerAddress] = useState("");
   const [price, setPrice] = useState("0.007");
   const [imageUrl, setImageUrl] = useState("");
+  const [minSalePrice, setMinSalePrice] = useState(0);
+  const [bidPrice, setBidPrice] = useState(0);
   const { data } = location.state;
   const { active, account, library, connector, activate, deactivate } = useWeb3React()
   const web3 = new Web3(window.ethereum)
+
+  const [modalForSale, setModalForSale] = useState(false);
+  const [modalForBid, setModalForBid] = useState(false);
+
+
   function handleShowHideWallet () {
     setIsShowConnectWallet(!isShowConnectWallet);
   }
@@ -80,6 +89,26 @@ function Detail() {
     const transaction = await marketplaceContract.methods
           .buyPhunk(id)
           .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price, value: web3.utils.toWei(price, "ether") });
+
+    transaction.await();
+  }
+
+  async function sale() {
+    console.log(minSalePrice)
+    setModalForSale(false)
+
+    const transaction = await marketplaceContract.methods
+          .offerPhunkForSale(id, minSalePrice)
+          .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price});
+    transaction.await();
+  }
+
+  async function placeBid() {
+    console.log(bidPrice)
+    setModalForBid(false)
+    const transaction = await marketplaceContract.methods
+          .enterBidForPhunk(id)
+          .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price, value: web3.utils.toWei(bidPrice, "ether") });
 
     transaction.await();
   }
@@ -176,6 +205,8 @@ function Detail() {
           </div>
           {active && <div className="actions-wrapper">
             <button className="button" onClick={buy}> Buy </button>
+            <button className="button" onClick={() => setModalForSale(true)}> Sale </button>
+            <button className="button" onClick={() => setModalForBid(true)}> Place Bid </button>
           </div>}
         </div>
       </div>
@@ -188,6 +219,49 @@ function Detail() {
         {active && <h2 className='connect-button' onClick={disconnect}>Disconnect</h2>}
         {!active && <h2 className='connect-button' onClick={connect}>Connect to MetaMask</h2>}
       </div>
+
+
+      <PureModal
+        isOpen={modalForSale}
+        width="600px"
+      >
+        <div className="justify-center">
+          {"Sale on CryptoPhunk " + id }
+        </div>
+        <div className="justify-center">
+          <img width="240" height="240" alt="" src={imageUrl} className="ng-lazyloaded" />
+        </div>
+        <div className="justify-center" >
+          <div >Sale Price (Ξ)</div>
+          <input type="number" onChange={(e) => setMinSalePrice(e.target.value)} className="input-price" />
+        </div>
+
+        <div className="button-group-justify-center">
+          <button onClick={() => setModalForSale(false)}>Cancel</button> &nbsp;&nbsp;    
+          <button onClick={sale}>Submit</button>
+        </div>
+      </PureModal>
+
+      <PureModal
+        isOpen={modalForBid}
+        width="600px"
+      >
+        <div className="justify-center">
+          {"Bid on CryptoPhunk " + id }
+        </div>
+        <div className="justify-center">
+          <img width="240" height="240" alt="" src={imageUrl} className="ng-lazyloaded" />
+        </div>
+        <div className="justify-center" >
+          <div >Bid Price (Ξ)</div>
+          <input type="number" onChange={(e) => setBidPrice(e.target.value)} className="input-price" />
+        </div>
+
+        <div className="button-group-justify-center">
+          <button onClick={() => setModalForBid(false)}>Cancel</button> &nbsp;&nbsp;    
+          <button onClick={placeBid}>Submit</button>
+        </div>
+      </PureModal>
     </div>
   );
 
