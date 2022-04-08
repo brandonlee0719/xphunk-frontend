@@ -228,6 +228,38 @@ contract NFTMarket is ReentrancyGuard, Pausable, Ownable {
       xPhunk = IERC721(newPhunksAddress);
     }
 
+    /* Returns the sale price for the offered phunk */
+    function getOfferedPrice(uint256 phunkIndex) external view returns (uint) {
+        Offer memory offer = phunksOfferedForSale[phunkIndex];
+
+        if (!offer.isForSale) {
+            return 0;
+        }
+
+        return offer.minValue;
+    }
+
+    /* Returns the highest bid for the phunk */
+    function getHighestBid(uint256 phunkIndex) external view returns (uint) {
+        Bid memory bid = phunkBids[phunkIndex];
+        if (!bid.hasBid) { return 0; }
+        return bid.value;
+    }
+
+    /* Returns the highest bidder for the phunk */
+    function getHighestBidder(uint256 phunkIndex) external view returns (address) {
+        Bid memory bid = phunkBids[phunkIndex];
+        if (!bid.hasBid) { 
+            return address(0);
+        }
+        return bid.bidder;
+    }
+
+    /* Returns the owner of the phunk */
+    function getPhunkOwner(uint phunkIndex) external view returns (address) {
+        return xPhunk.ownerOf(phunkIndex);
+    }
+
     /* Allows the owner of a xPhunk to stop offering it for sale */
     function phunkNoLongerForSale(uint phunkIndex) public nonReentrant() {
         if (xPhunk.ownerOf(phunkIndex) != msg.sender) revert('you are not the owner of this token');

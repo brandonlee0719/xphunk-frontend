@@ -13,7 +13,9 @@ function Detail() {
   const [traits, setTraits] = useState(new Array(20));
   const [isLoading, setLoading] = useState(false);
   const [ownerAddress, setOwnerAddress] = useState("");
-  const [price, setPrice] = useState("0.007");
+  const [price, setPrice] = useState(0);
+  const [bid, setBid] = useState(0);
+  const [bidder, setBidder] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const { data } = location.state;
   const { active, account, library, connector, activate, deactivate } = useWeb3React()
@@ -21,22 +23,29 @@ function Detail() {
   function handleShowHideWallet () {
     setIsShowConnectWallet(!isShowConnectWallet);
   }
+  const marketplaceContract = new web3.eth.Contract(MarketplaceABI, MarketplaceAddress);
 
   useEffect(() => {
     (async () => {
       setLoading(true);
 
       const res = await axios.get('https://api.opensea.io/api/v1/asset/0x71eb5c179ceb640160853144cbb8df5bd24ab5cc/'+ id +'/?include_orders=false');
-      const listingsRes = await axios.get('https://api.opensea.io/api/v1/asset/0x71eb5c179ceb640160853144cbb8df5bd24ab5cc/'+ id +'/listings');
-      console.log(res);
+
       setImageUrl(res.data.image_url);
-      const listings = listingsRes.data.listings[0];
-      if (listings) {
-        setPrice(web3.utils.fromWei(parseInt(listings.current_price).toString(), "ether"))
+
+      const owner = await marketplaceContract.methods.getPhunkOwner(id);
+      setOwnerAddress(owner);
+
+      const offerPrice = await marketplaceContract.methods.getOfferedPrice(id);
+      if (offerPrice) {
+        setPrice(web3.utils.fromWei(parseInt(offerPrice).toString(), "ether"))
       }
 
-      if (res?.data.top_ownerships[0].owner.address) {
-        setOwnerAddress(res?.data.top_ownerships[0].owner.address)
+      const bid = await marketplaceContract.methods.getHighestBid(id);
+      if (bid) {
+        setBid(bid);
+        const bidder = await marketplaceContract.methods.getHighestBidder(id);
+        setBidder(bidder);
       }
 
       // set traits
@@ -71,9 +80,6 @@ function Detail() {
     }
   }
 
-
-
-  const marketplaceContract = new web3.eth.Contract(MarketplaceABI, MarketplaceAddress);
 
   async function buy() {
     
@@ -166,10 +172,18 @@ function Detail() {
               href={"https://etherscan.io/address/" + ownerAddress}>
               <span className="pink">{ownerAddress.slice(0, 5) + "..." + ownerAddress.substr(ownerAddress.length - 4)}</span>
             </a>.</p>
-            <p>This phunk is currently for sale for <span className="pink">{price} ETH</span>
-              <span className="bold"> ()</span>.
-            </p>
-            <p>There are currently no bids on this phunk.</p>
+            {
+              price 
+              ? <p>This phunk is currently for sale for <span className="pink">{price} ETH</span>
+                  {/* <span className="bold"> ()</span>. */}
+                </p>
+              : <p>This phunk is currently not for sale.</p>
+            }
+            {
+              bid
+              ? <p>There is a bid of {bid} ETH for this punk from {bidder}.</p>
+              : <p>There are currently no bids on this phunk.</p>
+            }
           </div>
           <div className="actions-wrapper">
             <p className="pink">Connect a web3 wallet to interact with this item</p>
