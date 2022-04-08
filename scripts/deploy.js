@@ -28,24 +28,20 @@ async function main() {
   
     const contractsDir = path.resolve(
       process.cwd(),
-      'constants'
+      'src/redux/constants'
     );
   
     if (!fs.existsSync(contractsDir)) {
       fs.mkdirSync(contractsDir);
     }
 
-    fs.writeFileSync(
-        contractsDir + "/market-address.json",
-        JSON.stringify({ NFTMarket: market.address }, undefined, 2)
-    );
-
     // eslint-disable-next-line no-undef
-    const MerketArtifact = artifacts.readArtifactSync("NFTMarket");
-  
+    const MerketArtifact = JSON.stringify(artifacts.readArtifactSync("NFTMarket").abi);
+    const MarketAddress = `export const MarketplaceAddress = "${market.address}";export const MarketplaceABI = ${MerketArtifact}`;
+    
     fs.writeFileSync(
-      contractsDir + "/ABI.json",
-      JSON.stringify(MerketArtifact, null, 2)
+      contractsDir + "/marketAddress.js",
+      MarketAddress
     );
   }
 
