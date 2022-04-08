@@ -127,20 +127,20 @@ function App(props) {
         handleTraitClear={handleTraitClear}
       />}
       {
-        isLoading ? <></> : 
-        
-        <div className="listings-wrapper">
-          {data && data.map((item, index) => (
-            <Link key={index} className="phunk-item-link" to={`/details/${item.name.split('#')[1]}`} state={{ data: item }}>
-              <div className="phunk-item">
-                <img className="phunk-image" alt='' src={item.image} />
-              </div>
-              <div className="labels-wrapper">
-                <div className="phunk-label-detail">{item.name.split(' ')[1]}</div>
-              </div>
-            </Link>
-          ))}
-        </div>
+        isLoading ? <></> :
+
+          <div className="listings-wrapper">
+            {data && data.map((item, index) => (
+              <Link key={index} className="phunk-item-link" to={`/details/${item.name.split('#')[1]}`} state={{ data: item }}>
+                <div className="phunk-item">
+                  <img className="phunk-image" alt='' src={item.image} />
+                </div>
+                <div className="labels-wrapper">
+                  <div className="phunk-label-detail">{item.name.split(' ')[1]}</div>
+                </div>
+              </Link>
+            ))}
+          </div>
       }
 
       <div className={isShowConnectWallet ? "connect-wallet" : "connect-wallet hide-modal"}>
