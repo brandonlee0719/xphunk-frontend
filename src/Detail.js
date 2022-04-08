@@ -24,16 +24,12 @@ function Detail() {
   const { data } = location.state;
   const { active, account, library, connector, activate, deactivate } = useWeb3React()
   const web3 = new Web3(window.ethereum)
-<<<<<<< HEAD
 
   const [modalForSale, setModalForSale] = useState(false);
   const [modalForBid, setModalForBid] = useState(false);
 
 
   function handleShowHideWallet () {
-=======
-  function handleShowHideWallet() {
->>>>>>> 6e8934f490ce4454fe31bfc5ba2a16068d05bfc1
     setIsShowConnectWallet(!isShowConnectWallet);
   }
   const marketplaceContract = new web3.eth.Contract(MarketplaceABI, MarketplaceAddress);
@@ -48,7 +44,7 @@ function Detail() {
 
       const owner = await marketplaceContract.methods.getPhunkOwner(id);
       setOwnerAddress(owner);
-
+      
       const offerPrice = await marketplaceContract.methods.getOfferedPrice(id);
       if (offerPrice) {
         setPrice(web3.utils.fromWei(parseInt(offerPrice).toString(), "ether"))
@@ -104,7 +100,6 @@ function Detail() {
   }
 
   async function sale() {
-    console.log(minSalePrice)
     setModalForSale(false)
 
     const transaction = await marketplaceContract.methods
@@ -114,7 +109,6 @@ function Detail() {
   }
 
   async function placeBid() {
-    console.log(bidPrice)
     setModalForBid(false)
     const transaction = await marketplaceContract.methods
           .enterBidForPhunk(id)
