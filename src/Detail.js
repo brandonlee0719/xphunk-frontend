@@ -18,7 +18,7 @@ function Detail() {
   const { data } = location.state;
   const { active, account, library, connector, activate, deactivate } = useWeb3React()
   const web3 = new Web3(window.ethereum)
-  function handleShowHideWallet () {
+  function handleShowHideWallet() {
     setIsShowConnectWallet(!isShowConnectWallet);
   }
 
@@ -26,8 +26,8 @@ function Detail() {
     (async () => {
       setLoading(true);
 
-      const res = await axios.get('https://api.opensea.io/api/v1/asset/0x71eb5c179ceb640160853144cbb8df5bd24ab5cc/'+ id +'/?include_orders=false');
-      const listingsRes = await axios.get('https://api.opensea.io/api/v1/asset/0x71eb5c179ceb640160853144cbb8df5bd24ab5cc/'+ id +'/listings');
+      const res = await axios.get('https://api.opensea.io/api/v1/asset/0x71eb5c179ceb640160853144cbb8df5bd24ab5cc/' + id + '/?include_orders=false');
+      const listingsRes = await axios.get('https://api.opensea.io/api/v1/asset/0x71eb5c179ceb640160853144cbb8df5bd24ab5cc/' + id + '/listings');
       console.log(res);
       setImageUrl(res.data.image_url);
       const listings = listingsRes.data.listings[0];
@@ -42,7 +42,7 @@ function Detail() {
       // set traits
       const currentTraits = res.data.traits;
       let traitsArray = {};
-      for (let i = 0; i < currentTraits.length; i ++) {
+      for (let i = 0; i < currentTraits.length; i++) {
         traitsArray[currentTraits[i].trait_type] = {};
         traitsArray[currentTraits[i].trait_type].count = currentTraits[i].trait_count;
         traitsArray[currentTraits[i].trait_type]["value"] = currentTraits[i].value;
@@ -76,10 +76,10 @@ function Detail() {
   const marketplaceContract = new web3.eth.Contract(MarketplaceABI, MarketplaceAddress);
 
   async function buy() {
-    
+
     const transaction = await marketplaceContract.methods
-          .buyPhunk(id)
-          .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price, value: web3.utils.toWei(price, "ether") });
+      .buyPhunk(id)
+      .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price, value: web3.utils.toWei(price, "ether") });
 
     transaction.await();
   }
