@@ -1,9 +1,9 @@
 {
-  "CONTRACT_ADDRESS": "0x71eb5c179ceb640160853144cbb8df5bd24ab5cc",
-  "SCAN_LINK": "https://ropsten.etherscan.io/address/0x71eb5c179ceb640160853144cbb8df5bd24ab5cc",
+  "CONTRACT_ADDRESS": "0xBB03eDF5a6EbD43E5C7fCba6c7C8690e2e60De80",
+  "SCAN_LINK": "https://rinkeby.etherscan.io/address/0xBB03eDF5a6EbD43E5C7fCba6c7C8690e2e60De80",
   "NETWORK": {
-    "NAME": "Ropsten",
-    "SYMBOL": "Ropsten",
+    "NAME": "Rinkeby",
+    "SYMBOL": "Rinkeby",
     "ID": 3
   },
   "NFT_NAME": "Testing",

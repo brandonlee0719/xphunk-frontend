@@ -11,9 +11,16 @@ async function main() {
     );
   }
 
+  // // eslint-disable-next-line no-undef
+  // const Phunk = await ethers.getContractFactory("ExpansionPhunks");
+  // const phunk = await Phunk.deploy("https://ipfs.io/ipfs/QmRUt8m86Vo3pSXSABjsnNa3p4z5CbGJ5RAMn9TVf3dYhj/{id}");
+  // await phunk.deployed();
+
+  // console.log("Phunk address:", phunk.address);
+
   // eslint-disable-next-line no-undef
   const Market = await ethers.getContractFactory("NFTMarket");
-  const market = await Market.deploy("0xadD19b9B060A07484F31Ed2cc837e8dedf0CF6b6", "0x71eb5c179ceb640160853144cbb8df5bd24ab5cc");
+  const market = await Market.deploy("0xadD19b9B060A07484F31Ed2cc837e8dedf0CF6b6", "0x94E28C78049F11CDe11E6C8bc498bBEd097df4c5");
   await market.deployed();
 
   console.log("Market address:", market.address);
@@ -43,6 +50,15 @@ function showMerketDetails(market) {
     contractsDir + "/marketAddress.js",
     MarketAddress
   );
+  
+  // // eslint-disable-next-line no-undef
+  // const PhunkArtifact = JSON.stringify(artifacts.readArtifactSync("ExpansionPhunks").abi);
+  // const PhunkAddress = `export const PhunkAddress = "${phunk.address}";export const PhunkABI = ${PhunkArtifact}`;
+
+  // fs.writeFileSync(
+  //   contractsDir + "/phunkAddress.js",
+  //   PhunkAddress
+  // );
 }
 
 main()
