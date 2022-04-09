@@ -18,6 +18,7 @@ function App(props) {
   const [isLoading, setLoading] = useState(false);
   const [selectedTraits, setSelectedTraits] = useState([]);
   const [data, setData] = useState(false);
+  const [lazyData, setLazyData] = useState([]);
   const { active, account, library, connector, activate, deactivate } = useWeb3React()
 
   useEffect(() => {
@@ -44,6 +45,23 @@ function App(props) {
     handleFilterData();
     console.log(data);
 
+    let _lazyData = [];
+
+    for (let i=10000; i<10100; i++) {
+        _lazyData.push(<Link key={i} className="phunk-item-link" to={'/details/' + i}>
+                <div className="phunk-item">
+                  <img className="phunk-image" alt='' src="./flip.gif" />
+                </div>
+                <div className="labels-wrapper">
+                  <div className="phunk-label-detail">#{i}</div>
+                </div>
+              </Link>
+              );
+
+        // _lazyData.push(<h2 key={i}>hello</h2>)
+    }
+    console.log(_lazyData)
+    setLazyData(_lazyData);
   }, []);
 
   async function connect() {
@@ -127,8 +145,14 @@ function App(props) {
         handleTraitClear={handleTraitClear}
       />}
       {
-        isLoading ? <></> :
+        // isLoading && lazyData
 
+        
+        isLoading ? (
+          <div className="listings-wrapper">
+          {lazyData}
+          </div>
+        ) :
           <div className="listings-wrapper">
             {data && data.map((item, index) => (
               <Link key={index} className="phunk-item-link" to={`/details/${item.name.split('#')[1]}`} state={{ data: item }}>
@@ -143,12 +167,13 @@ function App(props) {
           </div>
       }
 
+
       <div className={isShowConnectWallet ? "connect-wallet" : "connect-wallet hide-modal"}>
-        <h2 className="hide-show" onClick={handleShowHideWallet}>{isShowConnectWallet ? "hide" : "show"}</h2>
-        <h1>{active ? "Connected To Ethereum" : "Ethereum Available"}</h1>
-        <h2>{active && account}</h2>
-        {active && <h2 className='connect-button' onClick={disconnect}>Disconnect</h2>}
-        {!active && <h2 className='connect-button' onClick={connect}>Connect to MetaMask</h2>}
+        <h3 className="hide-show" onClick={handleShowHideWallet}>{isShowConnectWallet ? "hide" : "show"}</h3>
+        <h3 className={active ? "min-y-margin" : "middle-y-margin"}>{active ? "Connected To Ethereum" : "Ethereum Available"}</h3>
+        <h4 className="min-y-margin">{active && account}</h4>
+        {active && <button className={active ? "min-y-margin connect-button" : "middle-y-margin connect-button"} onClick={disconnect}>Disconnect</button>}
+        {!active && <h3 className={active ? "min-y-margin connect-button" : "middle-y-margin connect-button"} onClick={connect}>Connect to MetaMask</h3>}
 
       </div>
     </div>

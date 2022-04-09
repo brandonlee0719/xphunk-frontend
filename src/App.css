@@ -1,5 +1,5 @@
 .App {
-    max-width: 117rem;
+    max-width: 1090px;
     padding: 6rem 4rem;
     margin: 0 auto;
 }
@@ -74,7 +74,7 @@ h2 {
     padding-bottom: 1rem;
 }
 
-.filter-button {
+/*.filter-button {
     border: none;
     background: #ff04b4;
     padding: 0;
@@ -85,7 +85,6 @@ h2 {
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    /* background-color: rgba(var(--pink), 1); */
     color: #FFF;
     padding: 0.5rem 1rem;
     font-family: Montserrat, sans-serif;
@@ -95,13 +94,13 @@ h2 {
     transition-duration: .2s;
     transition-timing-function: cubic-bezier(.785, .135, .15, .86);
     transition-delay: 0;
-}
+}*/
 
 .listings-wrapper {
     width: 100%;
     display: grid;
     align-content: start;
-    grid-template-columns: repeat(10, 10%);
+    grid-template-columns: repeat(12,8.3333333333%);
 }
 
 .phunk-item-link {
@@ -144,6 +143,7 @@ h2 {
     text-align: center;
 }
 
+
 .connect-wallet {
     display: block;
     position: fixed;
@@ -152,7 +152,7 @@ h2 {
     width: 100%;
     max-width: 38rem;
     box-shadow: 15px 5px 30px 5px #0000000d;
-    padding: 2.5rem 2rem 2.5rem 4rem;
+    padding: 7px 10px 7px 75px;
     background: #fcfcfc;
     border: 1px solid #ddd;
     border-right: none;
@@ -166,7 +166,7 @@ h2 {
 .hide-show {
     cursor: pointer;
     position: absolute;
-    top: 50%;
+    top: 35%;
     left: 0;
     /* font-size: 1.2rem; */
     transform: translate(-2.2rem, -50%) rotate(90deg);
@@ -259,9 +259,9 @@ button {
     align-items: center;
     background-color: #ff04b4;
     color: #ffffff;
-    padding: 0.5rem 1rem;
+    padding: 6px 10px;
     font-weight: 600;
-    font-size: 1.6rem;
+    font-size: 17px;
     transition-property: all;
     transition-duration: .2s;
     transition-timing-function: cubic-bezier(.785,.135,.15,.86);
@@ -296,4 +296,15 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.min-y-margin {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+
+.middle-y-margin {
+    margin-top: 13.5px;
+    margin-bottom: 13.5px;
 }
