@@ -36,7 +36,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy-testnet": "yarn hardhat run scripts/deploy.js --network rinkeby",
+    "deploy": "yarn hardhat run scripts/deploy.js --network mainnet"
   },
   "eslintConfig": {
     "extends": [

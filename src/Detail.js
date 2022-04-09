@@ -23,17 +23,16 @@ function Detail() {
   const [bidPrice, setBidPrice] = useState(0);
   const { data } = location.state;
   const { active, account, library, connector, activate, deactivate } = useWeb3React()
-  const web3 = new Web3(window.ethereum)
-
   const [modalForSale, setModalForSale] = useState(false);
   const [modalForBid, setModalForBid] = useState(false);
 
+  const web3 = new Web3(window.ethereum);
+  const marketplaceContract = new web3.eth.Contract(MarketplaceABI, MarketplaceAddress);
 
   function handleShowHideWallet () {
     setIsShowConnectWallet(!isShowConnectWallet);
   }
-  const marketplaceContract = new web3.eth.Contract(MarketplaceABI, MarketplaceAddress);
-
+  
   useEffect(() => {
     (async () => {
       setLoading(true);
@@ -42,20 +41,26 @@ function Detail() {
 
       setImageUrl(res.data.image_url);
 
-      const owner = await marketplaceContract.methods.getPhunkOwner(id);
-      setOwnerAddress(owner);
+      marketplaceContract.methods.getPhunkOwner(id).call(function (err, owner) {
+        setOwnerAddress(owner);
+      });
       
-      const offerPrice = await marketplaceContract.methods.getOfferedPrice(id);
-      if (offerPrice) {
-        setPrice(web3.utils.fromWei(parseInt(offerPrice).toString(), "ether"))
-      }
+      marketplaceContract.methods.getOfferedPrice(id).call(function (err, offerPrice) {
+        if (offerPrice) {
+          setPrice(web3.utils.fromWei(parseInt(offerPrice).toString(), "ether"))
+        }
+      });
 
-      const bid = await marketplaceContract.methods.getHighestBid(id);
-      if (bid) {
-        setBid(bid);
-        const bidder = await marketplaceContract.methods.getHighestBidder(id);
-        setBidder(bidder);
-      }
+      marketplaceContract.methods.getHighestBid(id).call(function (err, bid) {
+        if (bid) {
+          setBid(bid);
+
+          // get highest bidder if the phunk has bid
+          marketplaceContract.methods.getHighestBidder(id).call(function (res, bidder) {
+            setBidder(bidder);
+          });
+        }
+      });
 
       // set traits
       const currentTraits = res.data.traits;
@@ -200,14 +205,14 @@ function Detail() {
               <span className="pink">{ownerAddress.slice(0, 5) + "..." + ownerAddress.substr(ownerAddress.length - 4)}</span>
             </a>.</p>
             {
-              price 
+              Number(price) 
               ? <p>This phunk is currently for sale for <span className="pink">{price} ETH</span>
                   {/* <span className="bold"> ()</span>. */}
                 </p>
               : <p>This phunk is currently not for sale.</p>
             }
             {
-              bid
+              Number(bid)
               ? <p>There is a bid of {bid} ETH for this punk from {bidder}.</p>
               : <p>There are currently no bids on this phunk.</p>
             }

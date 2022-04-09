@@ -257,7 +257,8 @@ contract NFTMarket is ReentrancyGuard, Pausable, Ownable {
 
     /* Returns the owner of the phunk */
     function getPhunkOwner(uint phunkIndex) external view returns (address) {
-        return xPhunk.ownerOf(phunkIndex);
+        return address(0);
+        // return xPhunk.ownerOf(phunkIndex);
     }
 
     /* Allows the owner of a xPhunk to stop offering it for sale */
