@@ -13,14 +13,14 @@ async function main() {
 
   // // eslint-disable-next-line no-undef
   // const Phunk = await ethers.getContractFactory("ExpansionPhunks");
-  // const phunk = await Phunk.deploy("https://ipfs.io/ipfs/QmRUt8m86Vo3pSXSABjsnNa3p4z5CbGJ5RAMn9TVf3dYhj/{id}");
+  // const phunk = await Phunk.deploy("https://ipfs.io/ipfs/QmSH2wPew8BfQcCRwAYs4J7yXZcwVmiUpWX3YrxTH4SLBL/{id}");
   // await phunk.deployed();
 
   // console.log("Phunk address:", phunk.address);
 
   // eslint-disable-next-line no-undef
   const Market = await ethers.getContractFactory("NFTMarket");
-  const market = await Market.deploy("0xadD19b9B060A07484F31Ed2cc837e8dedf0CF6b6", "0x94E28C78049F11CDe11E6C8bc498bBEd097df4c5");
+  const market = await Market.deploy("0xadD19b9B060A07484F31Ed2cc837e8dedf0CF6b6", "0x4dFCb4C3AF63a5B8Cc62a0Ef2E6A6068B5D28fee");
   await market.deployed();
 
   console.log("Market address:", market.address);
