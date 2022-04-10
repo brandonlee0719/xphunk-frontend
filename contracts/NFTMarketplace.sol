@@ -255,28 +255,23 @@ contract NFTMarket is ReentrancyGuard, Pausable, Ownable {
         return bid.bidder;
     }
 
-    /* Returns the owner of the phunk */
-    function getPhunkOwner(uint phunkIndex) external view returns (address) {
-        return xPhunk.ownerOf(phunkIndex);
-    }
-
     /* Allows the owner of a xPhunk to stop offering it for sale */
     function phunkNoLongerForSale(uint phunkIndex) public nonReentrant() {
-        if (xPhunk.ownerOf(phunkIndex) != msg.sender) revert('you are not the owner of this token');
+        // if (xPhunk.ownerOf(phunkIndex) != msg.sender) revert('you are not the owner of this token');
         phunksOfferedForSale[phunkIndex] = Offer(false, phunkIndex, msg.sender, 0, address(0x0));
         emit PhunkNoLongerForSale(phunkIndex);
     }
 
     /* Allows a xPhunks owner to offer it for sale */
     function offerPhunkForSale(uint phunkIndex, uint minSalePriceInWei) public whenNotPaused nonReentrant()  {
-        if (xPhunk.ownerOf(phunkIndex) != msg.sender) revert('you are not the owner of this token');
+        // if (xPhunk.ownerOf(phunkIndex) != msg.sender) revert('you are not the owner of this token');
         phunksOfferedForSale[phunkIndex] = Offer(true, phunkIndex, msg.sender, minSalePriceInWei, address(0x0));
         emit PhunkOffered(phunkIndex, minSalePriceInWei, address(0x0));
     }
 
     /* Allows a xPhunks owner to offer it for sale to a specific address */
     function offerPhunkForSaleToAddress(uint phunkIndex, uint minSalePriceInWei, address toAddress) public whenNotPaused nonReentrant() {
-        if (xPhunk.ownerOf(phunkIndex) != msg.sender) revert('you are not the owner of this token');
+        // if (xPhunk.ownerOf(phunkIndex) != msg.sender) revert('you are not the owner of this token');
         phunksOfferedForSale[phunkIndex] = Offer(true, phunkIndex, msg.sender, minSalePriceInWei, toAddress);
         emit PhunkOffered(phunkIndex, minSalePriceInWei, toAddress);
     }
@@ -290,7 +285,7 @@ contract NFTMarket is ReentrancyGuard, Pausable, Ownable {
         if (msg.value != offer.minValue) revert('not enough ether');          // Didn't send enough ETH
         address seller = offer.seller;
         if (seller == msg.sender) revert('seller == msg.sender');
-        if (seller != xPhunk.ownerOf(phunkIndex)) revert('seller no longer owner of phunk'); // Seller no longer owner of phunk
+        // if (seller != xPhunk.ownerOf(phunkIndex)) revert('seller no longer owner of phunk'); // Seller no longer owner of phunk
 
 
         phunksOfferedForSale[phunkIndex] = Offer(false, phunkIndex, msg.sender, 0, address(0x0));
@@ -327,7 +322,7 @@ contract NFTMarket is ReentrancyGuard, Pausable, Ownable {
 
     /* Allows users to enter bids for any xPhunks */
     function enterBidForPhunk(uint phunkIndex) payable public whenNotPaused nonReentrant() {
-        if (xPhunk.ownerOf(phunkIndex) == msg.sender) revert('you already own this phunk');
+        // if (xPhunk.ownerOf(phunkIndex) == msg.sender) revert('you already own this phunk');
         if (msg.value == 0) revert('cannot enter bid of zero');
         Bid memory existing = phunkBids[phunkIndex];
         if (msg.value <= existing.value) revert('your bid is too low');
@@ -341,7 +336,7 @@ contract NFTMarket is ReentrancyGuard, Pausable, Ownable {
 
     /* Allows xPhunks owners to accept bids for their Phunks */
     function acceptBidForPhunk(uint phunkIndex, uint minPrice) public whenNotPaused nonReentrant() {
-        if (xPhunk.ownerOf(phunkIndex) != msg.sender) revert('you do not own this token');
+        // if (xPhunk.ownerOf(phunkIndex) != msg.sender) revert('you do not own this token');
         address seller = msg.sender;
         Bid memory bid = phunkBids[phunkIndex];
         if (bid.value == 0) revert('cannot enter bid of zero');
