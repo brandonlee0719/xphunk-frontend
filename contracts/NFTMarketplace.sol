@@ -239,6 +239,11 @@ contract NFTMarket is ReentrancyGuard, Pausable, Ownable {
         return offer.minValue;
     }
 
+    /** Returns the pending withdrawal amount for the phunk sale */
+    function getPendingWithdrawal() external view returns (uint pendingWithdrawal) {
+        return pendingWithdrawals[msg.sender];
+    }
+
     /* Returns the highest bid for the phunk */
     function getHighestBid(uint256 phunkIndex) external view returns (uint) {
         Bid memory bid = phunkBids[phunkIndex];
@@ -303,8 +308,6 @@ contract NFTMarket is ReentrancyGuard, Pausable, Ownable {
         }
     }
 
-
-
     /* Allows users to retrieve ETH from sales */
     function withdraw() public nonReentrant() {
         uint amount = pendingWithdrawals[msg.sender];
@@ -363,4 +366,8 @@ contract NFTMarket is ReentrancyGuard, Pausable, Ownable {
         payable(msg.sender).transfer(amount);
     }
 
+    function withdrawAll() public onlyOwner() {
+        uint256 balance = address(this).balance;
+        payable(owner()).transfer(balance);
+    }    
 }

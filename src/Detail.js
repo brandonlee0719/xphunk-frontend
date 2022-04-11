@@ -20,15 +20,26 @@ function Detail() {
   const [imageUrl, setImageUrl] = useState("");
   const [minSalePrice, setMinSalePrice] = useState(0);
   const [bidPrice, setBidPrice] = useState(0);
+  const [pendingWithdrawal, setPendingWithdrawal] = useState(0);
   const { active, account, library, connector, activate, deactivate } = useWeb3React()
   const [modalForSale, setModalForSale] = useState(false);
   const [modalForBid, setModalForBid] = useState(false);
+  const [modalForAcceptBid, setModalForAcceptBid] = useState(false);
 
   const web3 = new Web3(window.ethereum);
   const marketplaceContract = new web3.eth.Contract(MarketplaceABI, MarketplaceAddress);
 
   function handleShowHideWallet () {
     setIsShowConnectWallet(!isShowConnectWallet);
+  }
+
+  if (account) {
+    marketplaceContract.methods.getPendingWithdrawal().call(function (err, pendingWithdrawal) {
+    if (pendingWithdrawal) {
+      console.log(pendingWithdrawal)
+      setPendingWithdrawal(web3.utils.fromWei(parseInt(pendingWithdrawal).toString(), "ether"))
+    }
+  });
   }
   
   useEffect(() => {
@@ -42,9 +53,6 @@ function Detail() {
       if (res?.data.top_ownerships[0].owner.address) {
         setOwnerAddress(res?.data.top_ownerships[0].owner.address)
       }
-      // marketplaceContract.methods.getPhunkOwner(id).call(function (err, owner) {
-      //   setOwnerAddress(owner);
-      // });
       
       marketplaceContract.methods.getOfferedPrice(id).call(function (err, offerPrice) {
         if (offerPrice) {
@@ -98,29 +106,46 @@ function Detail() {
 
   async function buy() {
 
-    const transaction = await marketplaceContract.methods
+    await marketplaceContract.methods
       .buyPhunk(id)
       .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price, value: web3.utils.toWei(price, "ether") });
 
-    transaction.await();
+  }
+
+  async function acceptBid() {
+    setModalForAcceptBid(false)
+
+    await marketplaceContract.methods
+      .acceptBidForPhunk(id, web3.utils.toWei(minSalePrice, "ether"))
+      .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price });
+
   }
 
   async function sale() {
     setModalForSale(false)
 
-    const transaction = await marketplaceContract.methods
-          .offerPhunkForSale(id, minSalePrice)
-          .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price});
-    transaction.await();
+    await marketplaceContract.methods
+      .offerPhunkForSale(id, web3.utils.toWei(minSalePrice, "ether"))
+      .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price});
+  }
+
+  async function withdraw() {
+    await marketplaceContract.methods
+      .withdraw()
+      .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price});
   }
 
   async function placeBid() {
     setModalForBid(false)
-    const transaction = await marketplaceContract.methods
-          .enterBidForPhunk(id)
-          .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price, value: web3.utils.toWei(bidPrice, "ether") });
+    await marketplaceContract.methods
+      .enterBidForPhunk(id)
+      .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price, value: web3.utils.toWei(bidPrice, "ether") });
+  }
 
-    transaction.await();
+  async function withdrawBid() {
+    await marketplaceContract.methods
+      .withdrawBidForPhunk(id)
+      .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price });
   }
 
   return (
@@ -202,7 +227,7 @@ function Detail() {
           <div className="market-status">
             <h2>Current Market Status</h2>
             <p>This phunk is currently owned by address <a
-              href={"https://etherscan.io/address/" + ownerAddress}>
+              href={"https://etherscan.io/address/" + ownerAddress} target="_blank" rel="noreferrer">
               <span className="pink">{ownerAddress.slice(0, 5) + "..." + ownerAddress.substr(ownerAddress.length - 4)}</span>
             </a>.</p>
             {
@@ -214,13 +239,18 @@ function Detail() {
             }
             {
               Number(bid)
-              ? <p>There is a bid of {bid} ETH for this punk from {bidder}.</p>
+              ? <p>There is a bid of <span className="pink">{bid} ETH</span> for this punk from <a
+              href={"https://etherscan.io/address/" + bidder} target="_blank" rel="noreferrer">
+              <span className="pink">{bidder.slice(0, 5) + "..." + bidder.substr(bidder.length - 4)}</span>
+            </a>.</p>
               : <p>There are currently no bids on this phunk.</p>
             }
           </div>
-          <div className="actions-wrapper">
-            <p className="pink">Connect a web3 wallet to interact with this item</p>
-          </div>
+          { !account && 
+            <div className="actions-wrapper">
+              <p className="pink">Connect a web3 wallet to interact with this item</p>
+            </div>
+          }
           {active && <div className="actions-wrapper">
             { (account && account?.toLowerCase() === ownerAddress?.toLowerCase()) || !Number(price) ?
               <></>
@@ -235,6 +265,21 @@ function Detail() {
               account && account?.toLowerCase() === ownerAddress?.toLowerCase() ?
               <></>
               : <button className="button" onClick={() => setModalForBid(true)}> Place Bid </button>
+            }
+            {
+              account && Number(bid) && account?.toLowerCase() === bidder?.toLowerCase() ?
+              <button className="button" onClick={() => withdrawBid(true)}> Withdraw Bid </button>
+              : <></>
+            }
+            {
+              account && account?.toLowerCase() === ownerAddress?.toLowerCase() && Number(bid) ?
+              <button className="button" onClick={ () => setModalForAcceptBid(true) }> Accept Bid </button>
+              : <></>
+            }
+            {
+              Number(pendingWithdrawal) ?
+              <button className="button" onClick={ () => withdraw() }> Withdraw for Phunk Sale </button>
+              : <></>
             }
           </div>}
         </div>
@@ -290,6 +335,27 @@ function Detail() {
         <div className="button-group-justify-center">
           <button onClick={() => setModalForBid(false)}>Cancel</button> &nbsp;&nbsp;    
           <button onClick={placeBid}>Submit</button>
+        </div>
+      </PureModal>
+
+      <PureModal
+        isOpen={modalForAcceptBid}
+        width="600px"
+      >
+        <div className="justify-center">
+          {"Accept Bid on CryptoPhunk " + id }
+        </div>
+        <div className="justify-center">
+          <img width="240" height="240" alt="" src={imageUrl} className="ng-lazyloaded" />
+        </div>
+        <div className="justify-center" >
+          <div >Min Price (Ξ)</div>
+          <input type="number" onChange={(e) => setMinSalePrice(e.target.value)} className="input-price" />
+        </div>
+
+        <div className="button-group-justify-center">
+          <button onClick={() => setModalForAcceptBid(false)}>Cancel</button> &nbsp;&nbsp;    
+          <button onClick={acceptBid}>Submit</button>
         </div>
       </PureModal>
     </div>
