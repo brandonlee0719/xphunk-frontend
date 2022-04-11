@@ -25,6 +25,7 @@ function Detail() {
   const { active, account, library, connector, activate, deactivate } = useWeb3React()
   const [modalForSale, setModalForSale] = useState(false);
   const [modalForBid, setModalForBid] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
 
   const web3 = new Web3(window.ethereum);
   const marketplaceContract = new web3.eth.Contract(MarketplaceABI, MarketplaceAddress);
@@ -41,9 +42,14 @@ function Detail() {
 
       setImageUrl(res.data.image_url);
 
-      marketplaceContract.methods.getPhunkOwner(id).call(function (err, owner) {
-        setOwnerAddress(owner);
-      });
+      if (res?.data.top_ownerships[0].owner.address) {
+        setOwnerAddress(res?.data.top_ownerships[0].owner.address)
+        setIsOwner(account == ownerAddress);
+
+      }
+      // marketplaceContract.methods.getPhunkOwner(id).call(function (err, owner) {
+      //   setOwnerAddress(owner);
+      // });
       
       marketplaceContract.methods.getOfferedPrice(id).call(function (err, offerPrice) {
         if (offerPrice) {
@@ -221,20 +227,32 @@ function Detail() {
             <p className="pink">Connect a web3 wallet to interact with this item</p>
           </div>
           {active && <div className="actions-wrapper">
-            <button className="button" onClick={buy}> Buy </button>
-            <button className="button" onClick={() => setModalForSale(true)}> Sale </button>
-            <button className="button" onClick={() => setModalForBid(true)}> Place Bid </button>
+            { isOwner ?
+              <></>
+              : <button className="button" onClick={buy}> Buy </button>
+            }
+            {
+              isOwner ? 
+              <button className="button" onClick={() => setModalForSale(true)}> Sale </button>
+              : <></>
+            }
+            {
+              isOwner ?
+              <></>
+              : <button className="button" onClick={() => setModalForBid(true)}> Place Bid </button>
+            }
           </div>}
         </div>
       </div>
 
 
       <div className={isShowConnectWallet ? "connect-wallet" : "connect-wallet hide-modal"}>
-        <h2 className="hide-show" onClick={handleShowHideWallet}>{isShowConnectWallet ? "hide" : "show"}</h2>
-        <h1>{active ? "Connected To Ethereum" : "Ethereum Available"}</h1>
-        <h2>{active && account}</h2>
-        {active && <h2 className='connect-button' onClick={disconnect}>Disconnect</h2>}
-        {!active && <h2 className='connect-button' onClick={connect}>Connect to MetaMask</h2>}
+        <h3 className="hide-show" onClick={handleShowHideWallet}>{isShowConnectWallet ? "hide" : "show"}</h3>
+        <h3 className={active ? "min-y-margin" : "middle-y-margin"}>{active ? "Connected To Ethereum" : "Ethereum Available"}</h3>
+        <h4 className="min-y-margin">{active && account}</h4>
+        {active && <button className={active ? "min-y-margin connect-button" : "middle-y-margin connect-button"} onClick={disconnect}>Disconnect</button>}
+        {!active && <h3 className={active ? "min-y-margin connect-button" : "middle-y-margin connect-button"} onClick={connect}>Connect to MetaMask</h3>}
+
       </div>
 
 

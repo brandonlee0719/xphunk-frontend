@@ -270,10 +270,7 @@ button {
 .button {
     display: block;
     text-align: left;
-    padding: 1rem;
     margin-bottom: 1rem;
-    font-weight: 700;
-    font-size: 1.5rem;
     width: 100%;
     max-width: 46rem;
 }
