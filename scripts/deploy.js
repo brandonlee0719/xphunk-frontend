@@ -20,7 +20,7 @@ async function main() {
 
   // eslint-disable-next-line no-undef
   const Market = await ethers.getContractFactory("NFTMarket");
-  const market = await Market.deploy("0xadD19b9B060A07484F31Ed2cc837e8dedf0CF6b6", "0x4dFCb4C3AF63a5B8Cc62a0Ef2E6A6068B5D28fee");
+  const market = await Market.deploy("0xadD19b9B060A07484F31Ed2cc837e8dedf0CF6b6", "0xE8f3c84c919A8033Bd8b1f1ABc808E586D6fb199");
   await market.deployed();
 
   console.log("Market address:", market.address);
