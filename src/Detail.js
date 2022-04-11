@@ -227,7 +227,7 @@ function Detail() {
             <p className="pink">Connect a web3 wallet to interact with this item</p>
           </div>
           {active && <div className="actions-wrapper">
-            { isOwner ?
+            { isOwner || !Number(price) ?
               <></>
               : <button className="button" onClick={buy}> Buy </button>
             }
