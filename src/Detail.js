@@ -57,7 +57,7 @@ function Detail() {
 
       marketplaceContract.methods.getHighestBid(id).call(function (err, bid) {
         if (bid) {
-          setBid(bid);
+          setBid(web3.utils.fromWei(parseInt(bid).toString(), "ether"));
 
           // get highest bidder if the phunk has bid
           marketplaceContract.methods.getHighestBidder(id).call(function (res, bidder) {
