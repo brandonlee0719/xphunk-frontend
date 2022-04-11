@@ -44,8 +44,6 @@ function Detail() {
 
       if (res?.data.top_ownerships[0].owner.address) {
         setOwnerAddress(res?.data.top_ownerships[0].owner.address)
-        const accountAddress = account?.toLowerCase();
-        setIsOwner(accountAddress === res?.data.top_ownerships[0].owner.address);
       }
       // marketplaceContract.methods.getPhunkOwner(id).call(function (err, owner) {
       //   setOwnerAddress(owner);
@@ -227,17 +225,17 @@ function Detail() {
             <p className="pink">Connect a web3 wallet to interact with this item</p>
           </div>
           {active && <div className="actions-wrapper">
-            { isOwner || !Number(price) ?
+            { (!account && account?.toLowerCase === ownerAddress?.toLowerCase) || !Number(price) ?
               <></>
               : <button className="button" onClick={buy}> Buy </button>
             }
             {
-              isOwner ? 
+              !account && account.toLowerCase === ownerAddress?.toLowerCase ? 
               <button className="button" onClick={() => setModalForSale(true)}> Sale </button>
               : <></>
             }
             {
-              isOwner ?
+              !account && account?.toLowerCase === ownerAddress?.toLowerCase ?
               <></>
               : <button className="button" onClick={() => setModalForBid(true)}> Place Bid </button>
             }
