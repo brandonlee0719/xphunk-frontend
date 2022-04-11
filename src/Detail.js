@@ -38,14 +38,14 @@ function Detail() {
     (async () => {
       setLoading(true);
 
-      const res = await axios.get('https://api.opensea.io/api/v1/asset/0x71eb5c179ceb640160853144cbb8df5bd24ab5cc/'+ id +'/?include_orders=false');
+      const res = await axios.get('https://testnets-api.opensea.io/api/v1/asset/0x4dfcb4c3af63a5b8cc62a0ef2e6a6068b5d28fee/'+ id +'/?include_orders=false');
 
       setImageUrl(res.data.image_url);
 
       if (res?.data.top_ownerships[0].owner.address) {
         setOwnerAddress(res?.data.top_ownerships[0].owner.address)
-        setIsOwner(account == ownerAddress);
-
+        const accountAddress = account?.toLowerCase();
+        setIsOwner(accountAddress === res?.data.top_ownerships[0].owner.address);
       }
       // marketplaceContract.methods.getPhunkOwner(id).call(function (err, owner) {
       //   setOwnerAddress(owner);
