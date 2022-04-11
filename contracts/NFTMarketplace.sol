@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 
@@ -159,7 +159,7 @@ abstract contract Ownable is Context {
 
 contract NFTMarket is ReentrancyGuard, Pausable, Ownable {
 
-    IERC721 xPhunk;     // instance of the xPhunk contract
+    IERC1155 xPhunk;     // instance of the xPhunk contract
     uint256 listingFee = 20; // 2%
     address payable treasury;
 
@@ -196,7 +196,7 @@ contract NFTMarket is ReentrancyGuard, Pausable, Ownable {
     /* Initializes contract with an instance of xPhunk contract, and sets deployer as owner */
     constructor(address _treasury, address _xPhunkAddress) {
         treasury = payable(_treasury);
-        xPhunk = IERC721(_xPhunkAddress);
+        xPhunk = IERC1155(_xPhunkAddress);
     }
 
     function pause() public whenNotPaused onlyOwner {
@@ -225,7 +225,7 @@ contract NFTMarket is ReentrancyGuard, Pausable, Ownable {
 
     /* Allows the owner of the contract to set a new xPhunk contract address */
     function setxPhunkAddress(address newPhunksAddress) public onlyOwner {
-      xPhunk = IERC721(newPhunksAddress);
+      xPhunk = IERC1155(newPhunksAddress);
     }
 
     /* Returns the sale price for the offered phunk */
@@ -294,7 +294,7 @@ contract NFTMarket is ReentrancyGuard, Pausable, Ownable {
 
 
         phunksOfferedForSale[phunkIndex] = Offer(false, phunkIndex, msg.sender, 0, address(0x0));
-        xPhunk.safeTransferFrom(seller, msg.sender, phunkIndex);
+        xPhunk.safeTransferFrom(seller, msg.sender, phunkIndex, 1, "");
         pendingWithdrawals[seller] += msg.value;
         emit PhunkBought(phunkIndex, msg.value, seller, msg.sender);
 
@@ -350,7 +350,7 @@ contract NFTMarket is ReentrancyGuard, Pausable, Ownable {
         phunksOfferedForSale[phunkIndex] = Offer(false, phunkIndex, bidder, 0, address(0x0));
         uint amount = bid.value;
         phunkBids[phunkIndex] = Bid(false, phunkIndex, address(0x0), 0);
-        xPhunk.safeTransferFrom(msg.sender, bidder, phunkIndex);
+        xPhunk.safeTransferFrom(msg.sender, bidder, phunkIndex, 1, "");
         pendingWithdrawals[seller] += amount;
         emit PhunkBought(phunkIndex, bid.value, seller, bidder);
     }

@@ -33,15 +33,6 @@ function Detail() {
     setIsShowConnectWallet(!isShowConnectWallet);
   }
 
-  if (account) {
-    marketplaceContract.methods.getPendingWithdrawal().call(function (err, pendingWithdrawal) {
-    if (pendingWithdrawal) {
-      console.log(pendingWithdrawal)
-      setPendingWithdrawal(web3.utils.fromWei(parseInt(pendingWithdrawal).toString(), "ether"))
-    }
-  });
-  }
-  
   useEffect(() => {
     (async () => {
       setLoading(true);
@@ -59,6 +50,11 @@ function Detail() {
           setPrice(web3.utils.fromWei(parseInt(offerPrice).toString(), "ether"))
         }
       });
+                  
+      if (account) {
+        const pending = await marketplaceContract.methods.getPendingWithdrawal().call({ from: account });
+        setPendingWithdrawal(web3.utils.fromWei(parseInt(pending).toString(), "ether"))
+      }
 
       marketplaceContract.methods.getHighestBid(id).call(function (err, bid) {
         if (bid) {
@@ -285,7 +281,6 @@ function Detail() {
         </div>
       </div>
 
-
       <div className={isShowConnectWallet ? "connect-wallet" : "connect-wallet hide-modal"}>
         <h3 className="hide-show" onClick={handleShowHideWallet}>{isShowConnectWallet ? "hide" : "show"}</h3>
         <h3 className={active ? "min-y-margin" : "middle-y-margin"}>{active ? "Connected To Ethereum" : "Ethereum Available"}</h3>
@@ -294,7 +289,6 @@ function Detail() {
         {!active && <h3 className={active ? "min-y-margin connect-button" : "middle-y-margin connect-button"} onClick={connect}>Connect to MetaMask</h3>}
 
       </div>
-
 
       <PureModal
         isOpen={modalForSale}

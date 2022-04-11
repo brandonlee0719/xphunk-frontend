@@ -13,7 +13,7 @@ async function main() {
 
   // // eslint-disable-next-line no-undef
   // const Phunk = await ethers.getContractFactory("ExpansionPhunks");
-  // const phunk = await Phunk.deploy("https://ipfs.io/ipfs/QmSH2wPew8BfQcCRwAYs4J7yXZcwVmiUpWX3YrxTH4SLBL/{id}");
+  // const phunk = await Phunk.deploy("https://ipfs.io/ipfs/QmSH2wPew8BfQcCRwAYs4J7yXZcwVmiUpWX3YrxTH4SLBL/");
   // await phunk.deployed();
 
   // console.log("Phunk address:", phunk.address);
