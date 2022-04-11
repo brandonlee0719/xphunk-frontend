@@ -10,7 +10,6 @@ import 'react-pure-modal/dist/react-pure-modal.min.css';
 
 function Detail() {
   const { id } = useParams();
-  const location = useLocation()
   const [isShowConnectWallet, setIsShowConnectWallet] = useState(false);
   const [traits, setTraits] = useState(new Array(20));
   const [isLoading, setLoading] = useState(false);
@@ -21,11 +20,9 @@ function Detail() {
   const [imageUrl, setImageUrl] = useState("");
   const [minSalePrice, setMinSalePrice] = useState(0);
   const [bidPrice, setBidPrice] = useState(0);
-  const { data } = location.state;
   const { active, account, library, connector, activate, deactivate } = useWeb3React()
   const [modalForSale, setModalForSale] = useState(false);
   const [modalForBid, setModalForBid] = useState(false);
-  const [isOwner, setIsOwner] = useState(false);
 
   const web3 = new Web3(window.ethereum);
   const marketplaceContract = new web3.eth.Contract(MarketplaceABI, MarketplaceAddress);
