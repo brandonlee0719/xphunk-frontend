@@ -276,7 +276,7 @@ function Detail() {
             }
             {
               Number(pendingWithdrawal) ?
-              <button className="button" onClick={ () => withdraw() }> Withdraw for Phunk Sale </button>
+              <button className="button" onClick={ () => withdraw() }> Withdraw Pending Amount </button>
               : <></>
             }
           </div>}

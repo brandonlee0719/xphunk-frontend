@@ -35,7 +35,7 @@ function App(props) {
     connectWalletOnPageLoad()
   }, []);
 
-  useEffect(async () => {
+  useEffect(() => {
 
     var temp_trait = [];
     for (var i = 0; i < traits.length; i++) {
@@ -47,7 +47,7 @@ function App(props) {
 
     let _lazyData = [];
 
-    for (let i=10000; i<10100; i++) {
+    for (let i=10000; i<12000; i++) {
         _lazyData.push(<Link key={i} className="phunk-item-link" to={'/details/' + i}>
                 <div className="phunk-item">
                   <img className="phunk-image" alt='' src="./flip.gif" />
@@ -146,8 +146,6 @@ function App(props) {
       />}
       {
         // isLoading && lazyData
-
-        
         isLoading ? (
           <div className="listings-wrapper">
           {lazyData}
