@@ -106,6 +106,7 @@ h2 {
 .phunk-item-link {
     /* padding:0 1rem; */
     text-decoration: none;
+    padding: 2px;
 }
 
 .phunk-item-link-title {
@@ -150,7 +151,7 @@ h2 {
     top: 6rem;
     right: 0;
     width: 100%;
-    max-width: 38rem;
+    max-width: 400px;
     box-shadow: 15px 5px 30px 5px #0000000d;
     padding: 7px 10px 7px 75px;
     background: #fcfcfc;
@@ -160,7 +161,7 @@ h2 {
 }
 
 .hide-modal {
-    transform: translate(41rem);
+    transform: translate(440px);
 }
 
 .hide-show {
@@ -330,5 +331,13 @@ button {
         display: grid;
         align-content: start;
         grid-template-columns: repeat(2,50%);
+    }
+}
+
+@media screen and (max-width: 690px) {
+    .accessories {
+        display: grid;
+        grid-template-columns: repeat(2, 50%);
+        align-content: start;
     }
 }
