@@ -326,6 +326,25 @@ button {
 }
 
 @media screen and (max-width: 600px) {
+    .connect-wallet {
+        display: block;
+        position: fixed;
+        top: 6rem;
+        right: 0;
+        width: 100%;
+        max-width: 350px;
+        box-shadow: 15px 5px 30px 5px #0000000d;
+        padding: 7px 10px 7px 75px;
+        background: #fcfcfc;
+        border: 1px solid #ddd;
+        border-right: none;
+        color: #ff04b4;
+    }
+
+    .hide-modal {
+        transform: translate(400px);
+    }
+
     .listings-wrapper {
         width: 100%;
         display: grid;
@@ -335,6 +354,9 @@ button {
 }
 
 @media screen and (max-width: 690px) {
+    .select-container {
+        grid-template-columns: repeat(2, 50%);
+    }
     .accessories {
         display: grid;
         grid-template-columns: repeat(2, 50%);
