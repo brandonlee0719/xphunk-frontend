@@ -1,3 +1,5 @@
+const hre = require("hardhat");
+
 // This is a script for deploying your contracts. You can adapt it to deploy
 // yours, or create new ones.
 async function main() {
@@ -20,16 +22,19 @@ async function main() {
 
   // eslint-disable-next-line no-undef
   const Market = await ethers.getContractFactory("NFTMarket");
-  const market = await Market.deploy("0xadD19b9B060A07484F31Ed2cc837e8dedf0CF6b6", "0xE8f3c84c919A8033Bd8b1f1ABc808E586D6fb199");
+  const market = await Market.deploy(process.env.TREASURY_ADDRESS, process.env.XPHUNK_ADDRESS);
   await market.deployed();
 
   console.log("Market address:", market.address);
 
   // We also save the contract's artifacts and address in the frontend directory
-  showMerketDetails(market);
+  await showMerketDetails(market);
+
+  // set approve all for the market
+  await setApproveMarketToAll(market);
 }
 
-function showMerketDetails(market) {
+async function showMerketDetails(market) {
   const fs = require("fs");
   const path = require('path');
 
@@ -60,6 +65,13 @@ function showMerketDetails(market) {
   //   PhunkAddress
   // );
 }
+
+async function setApproveMarketToAll(market) {
+  // get Phunk contract
+  const XPHUNK = await hre.ethers.getContractFactory('ExpansionPhunks');
+  const xPhunk = await XPHUNK.attach(process.env.XPHUNK_ADDRESS);
+  await xPhunk.setApprovalForAll(market.address, true);
+  }
 
 main()
   .then(() => process.exit(0))

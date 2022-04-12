@@ -37,7 +37,7 @@ function Detail() {
     (async () => {
       setLoading(true);
 
-      const res = await axios.get('https://testnets-api.opensea.io/api/v1/asset/0x4dfcb4c3af63a5b8cc62a0ef2e6a6068b5d28fee/'+ id +'/?include_orders=false');
+      const res = await axios.get('https://testnets-api.opensea.io/api/v1/asset/0xE8f3c84c919A8033Bd8b1f1ABc808E586D6fb199/'+ id +'/?include_orders=false');
 
       setImageUrl(res.data.image_url);
 
