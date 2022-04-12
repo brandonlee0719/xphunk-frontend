@@ -79,7 +79,7 @@ function Detail() {
 
       setLoading(false);
     })();
-  }, []);
+  }, [account]);
 
   async function connect() {
     try {
@@ -145,7 +145,7 @@ function Detail() {
   }
 
   return (
-    isLoading ? <div></div> : <div className="App" >
+    <div className="App" >
       <div className="post-header-wrapper">
         <div className="breadcrumb">
           <Link className="phunk-item-link-title" to="/">
@@ -220,28 +220,30 @@ function Detail() {
 
 
           </div>
-          <div className="market-status">
-            <h2>Current Market Status</h2>
-            <p>This phunk is currently owned by address <a
-              href={"https://etherscan.io/address/" + ownerAddress} target="_blank" rel="noreferrer">
-              <span className="pink">{ownerAddress.slice(0, 5) + "..." + ownerAddress.substr(ownerAddress.length - 4)}</span>
-            </a>.</p>
-            {
-              Number(price) 
-              ? <p>This phunk is currently for sale for <span className="pink">{price} ETH</span>
-                  {/* <span className="bold"> ()</span>. */}
-                </p>
-              : <p>This phunk is currently not for sale.</p>
-            }
-            {
-              Number(bid)
-              ? <p>There is a bid of <span className="pink">{bid} ETH</span> for this punk from <a
-              href={"https://etherscan.io/address/" + bidder} target="_blank" rel="noreferrer">
-              <span className="pink">{bidder.slice(0, 5) + "..." + bidder.substr(bidder.length - 4)}</span>
-            </a>.</p>
-              : <p>There are currently no bids on this phunk.</p>
-            }
-          </div>
+          { isLoading ? <div></div> : 
+            <div className="market-status">
+              <h2>Current Market Status</h2>
+              <p>This phunk is currently owned by address <a
+                href={"https://etherscan.io/address/" + ownerAddress} target="_blank" rel="noreferrer">
+                <span className="pink">{ownerAddress.slice(0, 5) + "..." + ownerAddress.substr(ownerAddress.length - 4)}</span>
+              </a>.</p>
+              {
+                Number(price) 
+                ? <p>This phunk is currently for sale for <span className="pink">{price} ETH</span>
+                    {/* <span className="bold"> ()</span>. */}
+                  </p>
+                : <p>This phunk is currently not for sale.</p>
+              }
+              {
+                Number(bid)
+                ? <p>There is a bid of <span className="pink">{bid} ETH</span> for this punk from <a
+                href={"https://etherscan.io/address/" + bidder} target="_blank" rel="noreferrer">
+                <span className="pink">{bidder.slice(0, 5) + "..." + bidder.substr(bidder.length - 4)}</span>
+              </a>.</p>
+                : <p>There are currently no bids on this phunk.</p>
+              }
+            </div>
+          }
           { !account && 
             <div className="actions-wrapper">
               <p className="pink">Connect a web3 wallet to interact with this item</p>
