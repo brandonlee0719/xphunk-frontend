@@ -305,3 +305,30 @@ button {
     margin-top: 13.5px;
     margin-bottom: 13.5px;
 }
+
+@media screen and (max-width: 1090px) {
+    .listings-wrapper {
+        width: 100%;
+        display: grid;
+        align-content: start;
+        grid-template-columns: repeat(10,10%);
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .listings-wrapper {
+        width: 100%;
+        display: grid;
+        align-content: start;
+        grid-template-columns: repeat(5,20%);
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .listings-wrapper {
+        width: 100%;
+        display: grid;
+        align-content: start;
+        grid-template-columns: repeat(2,50%);
+    }
+}
