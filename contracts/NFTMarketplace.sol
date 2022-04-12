@@ -293,8 +293,6 @@ contract NFTMarket is ReentrancyGuard, Pausable, Ownable {
 
         phunksOfferedForSale[phunkIndex] = Offer(false, phunkIndex, msg.sender, 0, address(0x0));
         xPhunk.safeTransferFrom(seller, msg.sender, phunkIndex, 1, "");
-        // set approval to the market
-        xPhunk.setApprovalForAll(address(this), true);
         pendingWithdrawals[seller] += msg.value;
         emit PhunkBought(phunkIndex, msg.value, seller, msg.sender);
 
@@ -351,8 +349,6 @@ contract NFTMarket is ReentrancyGuard, Pausable, Ownable {
         uint amount = bid.value;
         phunkBids[phunkIndex] = Bid(false, phunkIndex, address(0x0), 0);
         xPhunk.safeTransferFrom(msg.sender, bidder, phunkIndex, 1, "");
-        // set approval to the market
-        xPhunk.setApprovalForAll(address(this), true);
         pendingWithdrawals[seller] += amount;
         emit PhunkBought(phunkIndex, bid.value, seller, bidder);
     }

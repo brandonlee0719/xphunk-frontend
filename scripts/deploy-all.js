@@ -13,28 +13,28 @@ async function main() {
     );
   }
 
-  // // eslint-disable-next-line no-undef
-  // const Phunk = await ethers.getContractFactory("ExpansionPhunks");
-  // const phunk = await Phunk.deploy("https://ipfs.io/ipfs/QmSH2wPew8BfQcCRwAYs4J7yXZcwVmiUpWX3YrxTH4SLBL/");
-  // await phunk.deployed();
+  // eslint-disable-next-line no-undef
+  const Phunk = await ethers.getContractFactory("ExpansionPhunks");
+  const phunk = await Phunk.deploy("https://ipfs.io/ipfs/QmSH2wPew8BfQcCRwAYs4J7yXZcwVmiUpWX3YrxTH4SLBL/");
+  await phunk.deployed();
 
-  // console.log("Phunk address:", phunk.address);
+  console.log("Phunk address:", phunk.address);
 
   // eslint-disable-next-line no-undef
   const Market = await ethers.getContractFactory("NFTMarket");
-  const market = await Market.deploy(process.env.TREASURY_ADDRESS, process.env.XPHUNK_ADDRESS);
+  const market = await Market.deploy(process.env.TREASURY_ADDRESS, phunk.address);
   await market.deployed();
 
   console.log("Market address:", market.address);
 
   // We also save the contract's artifacts and address in the frontend directory
-  await showMerketDetails(market);
+  await showMerketDetails(market, phunk);
 
   // set approve all for the market
-  await setApproveMarketToAll(market);
+  await setApproveMarketToAll(market, phunk);
 }
 
-async function showMerketDetails(market) {
+async function showMerketDetails(market, phunk) {
   const fs = require("fs");
   const path = require('path');
 
@@ -56,21 +56,18 @@ async function showMerketDetails(market) {
     MarketAddress
   );
   
-  // // eslint-disable-next-line no-undef
-  // const PhunkArtifact = JSON.stringify(artifacts.readArtifactSync("ExpansionPhunks").abi);
-  // const PhunkAddress = `export const PhunkAddress = "${phunk.address}";export const PhunkABI = ${PhunkArtifact}`;
+  // eslint-disable-next-line no-undef
+  const PhunkArtifact = JSON.stringify(artifacts.readArtifactSync("ExpansionPhunks").abi);
+  const PhunkAddress = `export const PhunkAddress = "${phunk.address}";export const PhunkABI = ${PhunkArtifact}`;
 
-  // fs.writeFileSync(
-  //   contractsDir + "/phunkAddress.js",
-  //   PhunkAddress
-  // );
+  fs.writeFileSync(
+    contractsDir + "/phunkAddress.js",
+    PhunkAddress
+  );
 }
 
-async function setApproveMarketToAll(market) {
-  // get Phunk contract
-  const XPHUNK = await hre.ethers.getContractFactory('ExpansionPhunks');
-  const xPhunk = await XPHUNK.attach(process.env.XPHUNK_ADDRESS);
-  await xPhunk.setApprovalForAll(market.address, true);
+async function setApproveMarketToAll(market, phunk) {
+  await phunk.setApprovalForAll(market.address, true);
 }
 
 main()

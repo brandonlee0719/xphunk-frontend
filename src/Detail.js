@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useWeb3React } from "@web3-react/core";
 import { injected } from "./connectors";
 import { MarketplaceAddress, MarketplaceABI } from "./redux/constants/marketAddress";
+import { PhunkAddress, PhunkABI } from "./redux/constants/phunkAddress";
 import Web3 from 'web3'
 import PureModal from 'react-pure-modal';
 import 'react-pure-modal/dist/react-pure-modal.min.css';
@@ -28,6 +29,7 @@ function Detail() {
 
   const web3 = new Web3(window.ethereum);
   const marketplaceContract = new web3.eth.Contract(MarketplaceABI, MarketplaceAddress);
+  const phunkContract = new web3.eth.Contract(PhunkABI, PhunkAddress);
 
   function handleShowHideWallet () {
     setIsShowConnectWallet(!isShowConnectWallet);
@@ -37,7 +39,7 @@ function Detail() {
     (async () => {
       setLoading(true);
 
-      const res = await axios.get('https://testnets-api.opensea.io/api/v1/asset/0xE8f3c84c919A8033Bd8b1f1ABc808E586D6fb199/'+ id +'/?include_orders=false');
+      const res = await axios.get('https://testnets-api.opensea.io/api/v1/asset/' + PhunkAddress + '/'+ id +'/?include_orders=false');
 
       setImageUrl(res.data.image_url);
 
@@ -101,24 +103,31 @@ function Detail() {
 
 
   async function buy() {
-
     await marketplaceContract.methods
       .buyPhunk(id)
       .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price, value: web3.utils.toWei(price, "ether") });
-
   }
 
   async function acceptBid() {
     setModalForAcceptBid(false)
 
+    // set approval to the new owner
+    await phunkContract.methods
+      .setApprovalForAll(MarketplaceAddress, true)
+      .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price });
+
     await marketplaceContract.methods
       .acceptBidForPhunk(id, web3.utils.toWei(minSalePrice, "ether"))
       .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price });
-
   }
 
   async function sale() {
     setModalForSale(false)
+
+    // set approval to the new owner
+    await phunkContract.methods
+      .setApprovalForAll(MarketplaceAddress, true)
+      .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price });
 
     await marketplaceContract.methods
       .offerPhunkForSale(id, web3.utils.toWei(minSalePrice, "ether"))
