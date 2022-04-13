@@ -106,7 +106,6 @@ h2 {
 .phunk-item-link {
     /* padding:0 1rem; */
     text-decoration: none;
-    padding: 2px;
 }
 
 .phunk-item-link-title {
@@ -322,6 +321,9 @@ button {
         display: grid;
         align-content: start;
         grid-template-columns: repeat(5,20%);
+    }
+    .phunk-item-link {
+        padding: 2px;
     }
 }
 
