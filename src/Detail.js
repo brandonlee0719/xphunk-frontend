@@ -81,7 +81,7 @@ function Detail() {
 
       setLoading(false);
     })();
-  }, [account]);
+  }, [account, price, bidPrice, pendingWithdrawal, ownerAddress]);
 
   async function connect() {
     try {
