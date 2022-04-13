@@ -334,7 +334,7 @@ button {
         top: 6rem;
         right: 0;
         width: 100%;
-        max-width: 350px;
+        max-width: 340px;
         box-shadow: 15px 5px 30px 5px #0000000d;
         padding: 7px 10px 7px 75px;
         background: #fcfcfc;
@@ -344,7 +344,7 @@ button {
     }
 
     .hide-modal {
-        transform: translate(400px);
+        transform: translate(390px);
     }
 
     .listings-wrapper {
