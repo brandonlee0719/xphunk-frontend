@@ -81,7 +81,6 @@ function Detail() {
       setTraits(traitsArray);
 
       setLoading(false);
-      settransactionFinished(false);
     })();
   }, [account, transactionFinished]);
 
@@ -109,7 +108,7 @@ function Detail() {
       .buyPhunk(id)
       .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price, value: web3.utils.toWei(price, "ether") });
 
-    settransactionFinished(true);
+    settransactionFinished(!transactionFinished);
   }
 
   async function acceptBid() {
@@ -124,7 +123,7 @@ function Detail() {
       .acceptBidForPhunk(id, web3.utils.toWei(minSalePrice, "ether"))
       .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price });
 
-    settransactionFinished(true);
+    settransactionFinished(!transactionFinished);
   }
 
   async function sale() {
@@ -139,7 +138,7 @@ function Detail() {
       .offerPhunkForSale(id, web3.utils.toWei(minSalePrice, "ether"))
       .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price});
     
-    settransactionFinished(true);
+    settransactionFinished(!transactionFinished);
   }
 
   async function withdraw() {
@@ -147,7 +146,7 @@ function Detail() {
       .withdraw()
       .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price});
 
-    settransactionFinished(true);
+    settransactionFinished(!transactionFinished);
   }
 
   async function placeBid() {
@@ -156,7 +155,7 @@ function Detail() {
       .enterBidForPhunk(id)
       .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price, value: web3.utils.toWei(bidPrice, "ether") });
     
-    settransactionFinished(true);
+    settransactionFinished(!transactionFinished);
   }
 
   async function withdrawBid() {
@@ -164,7 +163,7 @@ function Detail() {
       .withdrawBidForPhunk(id)
       .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price });
 
-    settransactionFinished(true);
+    settransactionFinished(!transactionFinished);
   }
 
   return (
