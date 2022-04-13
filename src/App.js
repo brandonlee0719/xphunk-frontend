@@ -18,6 +18,8 @@ function App(props) {
   const [isLoading, setLoading] = useState(false);
   const [selectedTraits, setSelectedTraits] = useState([]);
   const [data, setData] = useState(false);
+  const [filteredData, setFilteredData] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
   const [lazyData, setLazyData] = useState([]);
   const { active, account, library, connector, activate, deactivate } = useWeb3React()
 
@@ -62,7 +64,15 @@ function App(props) {
     }
     console.log(_lazyData)
     setLazyData(_lazyData);
+
+
   }, []);
+
+  useEffect(() => {
+    if (searchValue) {
+      handleSearch(searchValue);
+    }
+  }, [filteredData]);
 
   async function connect() {
     console.log("connect------------");
@@ -118,8 +128,12 @@ function App(props) {
       "traitSkinTone": selectedTraits[10] === "Skin Tone" ? null : selectedTraits[10],
       "traitType": selectedTraits[11] === "Type" ? null : selectedTraits[11],
     };
+
     const res = await axios.get(BASE_URL, { params });
     setData(res.data);
+    setFilteredData(res.data);
+    
+
     setLoading(false);
   };
 
@@ -127,11 +141,30 @@ function App(props) {
     setShowConnectWallet(!isShowConnectWallet);
   };
 
+  const handleSearch = async(value) => {
+    console.log(filteredData)
+    setSearchValue(value);
+    const result = filteredData.filter(function(row) {
+      const nameArr = row.name.split("#");
+      const number = nameArr[nameArr.length - 1];
+      if (number.search(value) >= 0) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+    setData(result);
+  }
+
   return (
     <div className="App" >
       <div className="post-header-wrapper">
         <h1>xPhunks for Sale</h1>
         <h2>{data.length}/10000 xPhunks Total</h2>
+      </div>
+      <div className="search">
+        <input className="search-input" type="text" onChange={e => handleSearch(e.target.value)} />
       </div>
       <div className="filter">
         <button className="filter-button" onClick={handleSortButton}>
