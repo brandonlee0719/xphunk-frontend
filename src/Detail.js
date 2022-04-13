@@ -14,6 +14,7 @@ function Detail() {
   const [isShowConnectWallet, setIsShowConnectWallet] = useState(false);
   const [traits, setTraits] = useState(new Array(20));
   const [isLoading, setLoading] = useState(false);
+  const [transactionFinished, settransactionFinished] = useState(false);
   const [ownerAddress, setOwnerAddress] = useState("");
   const [price, setPrice] = useState(0);
   const [bid, setBid] = useState(0);
@@ -80,8 +81,9 @@ function Detail() {
       setTraits(traitsArray);
 
       setLoading(false);
+      settransactionFinished(false);
     })();
-  }, [account, price, bidPrice, pendingWithdrawal, ownerAddress]);
+  }, [account, transactionFinished]);
 
   async function connect() {
     try {
@@ -106,6 +108,8 @@ function Detail() {
     await marketplaceContract.methods
       .buyPhunk(id)
       .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price, value: web3.utils.toWei(price, "ether") });
+
+    settransactionFinished(true);
   }
 
   async function acceptBid() {
@@ -119,6 +123,8 @@ function Detail() {
     await marketplaceContract.methods
       .acceptBidForPhunk(id, web3.utils.toWei(minSalePrice, "ether"))
       .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price });
+
+    settransactionFinished(true);
   }
 
   async function sale() {
@@ -132,12 +138,16 @@ function Detail() {
     await marketplaceContract.methods
       .offerPhunkForSale(id, web3.utils.toWei(minSalePrice, "ether"))
       .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price});
+    
+    settransactionFinished(true);
   }
 
   async function withdraw() {
     await marketplaceContract.methods
       .withdraw()
       .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price});
+
+    settransactionFinished(true);
   }
 
   async function placeBid() {
@@ -145,12 +155,16 @@ function Detail() {
     await marketplaceContract.methods
       .enterBidForPhunk(id)
       .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price, value: web3.utils.toWei(bidPrice, "ether") });
+    
+    settransactionFinished(true);
   }
 
   async function withdrawBid() {
     await marketplaceContract.methods
       .withdrawBidForPhunk(id)
       .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price });
+
+    settransactionFinished(true);
   }
 
   return (
