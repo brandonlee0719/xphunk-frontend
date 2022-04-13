@@ -102,7 +102,6 @@ function Detail() {
     }
   }
 
-
   async function buy() {
     await marketplaceContract.methods
       .buyPhunk(id)
@@ -138,6 +137,14 @@ function Detail() {
       .offerPhunkForSale(id, web3.utils.toWei(minSalePrice, "ether"))
       .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price});
     
+    settransactionFinished(!transactionFinished);
+  }
+
+  async function cancelSale() {
+    await marketplaceContract.methods
+      .phunkNoLongerForSale(id)
+      .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price });
+
     settransactionFinished(!transactionFinished);
   }
 
@@ -282,13 +289,18 @@ function Detail() {
               : <></>
             }
             {
+              account && account.toLowerCase() === ownerAddress?.toLowerCase() && Number(price) ? 
+              <button className="button" onClick={() => cancelSale()}> Cancel Sale Offer </button>
+              : <></>
+            }
+            {
               account && account?.toLowerCase() === ownerAddress?.toLowerCase() ?
               <></>
               : <button className="button" onClick={() => setModalForBid(true)}> Place Bid </button>
             }
             {
               account && Number(bid) && account?.toLowerCase() === bidder?.toLowerCase() ?
-              <button className="button" onClick={() => withdrawBid(true)}> Withdraw Bid </button>
+              <button className="button" onClick={() => withdrawBid()}> Withdraw Bid </button>
               : <></>
             }
             {
