@@ -178,20 +178,20 @@ function Detail() {
       <div className="post-header-wrapper">
         <div className="breadcrumb">
           <Link className="phunk-item-link-title" to="/">
-            <h2>ExpansionPhunks</h2>
+            <h2 className="mobile-h2">ExpansionPhunks</h2>
           </Link>
-          <h2 className="divider">/</h2>
-          <h2 className="number">{id}</h2>
+          <h2 className="divider mobile-h2">/</h2>
+          <h2 className="number mobile-h2">{id}</h2>
         </div>
         <div className="image-wrapper">
-          <img width="312" height="312" alt="" src={imageUrl} className="ng-lazyloaded" />
+          <img alt="" src={imageUrl} className="ng-lazyloaded" />
         </div>
         <div className="details-wrapper">
           <div className="title-wrapper">
             <div className="title-color">
-              <h1>ExpansionPhunks {id}</h1>
+              <h1 className="mobile-h1">ExpansionPhunks {id}</h1>
             </div>
-            <h2>One of {traits["Type"] != null && traits["Type"].count} <span _ngcontent-erd-c39="" className="pink">{traits["Type"] != null && traits["Type"].value}</span> phunks.</h2>
+            <h2 className="mobile-h2">One of {traits["Type"] != null && traits["Type"].count} <span _ngcontent-erd-c39="" className="pink">{traits["Type"] != null && traits["Type"].value}</span> phunks.</h2>
           </div>
           <div className="accessories-wrapper">
             <h2>Attributes</h2>

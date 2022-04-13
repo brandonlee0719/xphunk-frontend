@@ -353,6 +353,29 @@ button {
         align-content: start;
         grid-template-columns: repeat(2,50%);
     }
+
+    .App{
+        padding: 6rem 0rem;
+    }
+
+    .ng-lazyloaded {
+        width: 150px;
+        height: 150px;
+    }
+
+    .mobile-h2 {
+        font-size: 15px;
+    }
+
+    .mobile-h1 {
+        font-size:  20px;
+    }
+
+    .accessories {
+        display: grid;
+        grid-template-columns: repeat(1, 100%);
+        align-content: start;
+    }
 }
 
 @media screen and (max-width: 690px) {
@@ -364,10 +387,17 @@ button {
         grid-template-columns: repeat(2, 50%);
         align-content: start;
     }
+
+    
 }
 
 .search-input {
     padding: 0.5rem;
     font-size: 1.4rem;
     width: 200px;
+}
+
+.ng-lazyloaded {
+    max-width: 312px;
+    max-height: 312px;
 }
