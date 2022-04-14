@@ -100,7 +100,7 @@ h2 {
     width: 100%;
     display: grid;
     align-content: start;
-    grid-template-columns: repeat(12,8.3333333333%);
+    grid-template-columns: repeat(14,7.14%);
 }
 
 .phunk-item-link {
@@ -131,7 +131,7 @@ h2 {
 }
 
 .phunk-label-detail {
-    font-size: 1.4rem;
+    font-size: 18px;
     color: #000;
     text-align: center;
     font-weight: 700;
