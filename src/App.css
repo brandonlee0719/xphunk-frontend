@@ -392,9 +392,12 @@ button {
 }
 
 .search-input {
-    padding: 0.5rem;
-    font-size: 1.4rem;
     width: 200px;
+    padding: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 7px;
+    border: 1px solid #767676;
 }
 
 .ng-lazyloaded {
