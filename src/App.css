@@ -29,7 +29,7 @@ h2 {
 
 .select-container {
     display: grid;
-    grid-template-columns: repeat(4, calc((100% / 4) - 1rem));
+    grid-template-columns: repeat(4, 25%);
     grid-column-gap: 2rem;
     column-gap: 0rem;
     padding-bottom: 2rem;
@@ -37,8 +37,10 @@ h2 {
 }
 
 .selector {
-    padding: 0.5rem;
-    font-size: 1.4rem;
+    padding: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 7px;
     width: 100%;
 }
 
@@ -47,10 +49,12 @@ h2 {
 }
 
 .selector-group {
-    display: flex;
+    /*display: flex;
     flex-direction: row;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 10px;*/
+        height: 45px;
+    margin: 5px;
 }
 
 .hidden {
@@ -376,7 +380,7 @@ button {
 
 @media screen and (max-width: 690px) {
     .select-container {
-        grid-template-columns: repeat(2, 50%);
+        grid-template-columns: repeat(1, 100%);
     }
     .accessories {
         display: grid;
