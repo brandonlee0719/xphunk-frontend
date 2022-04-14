@@ -202,7 +202,8 @@ function App(props) {
       <div className={isShowConnectWallet ? "connect-wallet" : "connect-wallet hide-modal"}>
         <h3 className="hide-show" onClick={handleShowHideWallet}>{isShowConnectWallet ? "hide" : "show"}</h3>
         <h3 className={active ? "min-y-margin" : "middle-y-margin"}>{active ? "Connected To Ethereum" : "Ethereum Available"}</h3>
-        <h4 className="min-y-margin">{active && account}</h4>
+        <h4 className="min-y-margin full-address">{active && account}</h4>
+        <h4 className="min-y-margin short-address">{active && account.slice(0, 15) + "..."}</h4>
         {active && <button className={active ? "min-y-margin connect-button" : "middle-y-margin connect-button"} onClick={disconnect}>Disconnect</button>}
         {!active && <h3 className={active ? "min-y-margin connect-button" : "middle-y-margin connect-button"} onClick={connect}>Connect to MetaMask</h3>}
 

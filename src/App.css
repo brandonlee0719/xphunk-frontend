@@ -401,3 +401,25 @@ button {
     max-width: 312px;
     max-height: 312px;
 }
+
+.short-address {
+    display: none;
+}
+
+@media screen and (max-width: 450px) {
+    .connect-wallet {
+        max-width: 170px;
+    }
+
+    .short-address {
+        display: block;
+    }
+
+    .full-address {
+        display: none;
+    }
+
+    .hide-modal {
+        transform: translate(220px);
+    }
+}
