@@ -354,10 +354,6 @@ button {
         grid-template-columns: repeat(2,50%);
     }
 
-    .App{
-        padding: 6rem 0rem;
-    }
-
     .ng-lazyloaded {
         width: 150px;
         height: 150px;
