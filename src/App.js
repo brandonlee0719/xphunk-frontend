@@ -160,7 +160,7 @@ function App(props) {
   return (
     <div className="App" >
       <div className="post-header-wrapper">
-        <h1>xPhunks for Sale</h1>
+        <h1>Expansion Phunks Marketplace</h1>
         <h2>{data.length}/10000 xPhunks Total</h2>
       </div>
       <div className="search">
