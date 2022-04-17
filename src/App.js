@@ -95,8 +95,14 @@ function App(props) {
   }
 
   const handleTraitChange = (e, index) => {
+
     var temp_trait = selectedTraits;
-    temp_trait[index] = e.target.value;
+    if (e) {
+      temp_trait[index] = e.value;
+    } else {
+      temp_trait[index] = null;
+    }
+
     setSelectedTraits(temp_trait);
     handleFilterData();
   };
