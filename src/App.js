@@ -10,7 +10,7 @@ import TraitSelector from './TraitSelector';
 import traits from './constant';
 import './App.css';
 
-const BASE_URL = 'https://xphunk-backend.herokuapp.com/api';
+const BASE_URL = 'https://deep-index.moralis.io/api/v2/nft/0x71eB5C179CeB640160853144Cbb8dF5bd24aB5cC?chain=eth&format=decimal';
 
 function App(props) {
   const [isShowFilter, setShowFilter] = useState(false);
