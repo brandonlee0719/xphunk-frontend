@@ -23,7 +23,7 @@ function Detail() {
   const [minSalePrice, setMinSalePrice] = useState(0);
   const [bidPrice, setBidPrice] = useState(0);
   const [pendingWithdrawal, setPendingWithdrawal] = useState(0);
-  const { active, account, library, connector, activate, deactivate } = useWeb3React()
+  const { active, account, library, connector, activate, deactivate } = useWeb3React();
   const [modalForSale, setModalForSale] = useState(false);
   const [modalForBid, setModalForBid] = useState(false);
   const [modalForAcceptBid, setModalForAcceptBid] = useState(false);
@@ -40,7 +40,7 @@ function Detail() {
     (async () => {
       setLoading(true);
 
-      const res = await axios.get('https://testnets-api.opensea.io/api/v1/asset/' + PhunkAddress + '/'+ id +'/?include_orders=false');
+      const res = await axios.get('https://api.opensea.io/api/v1/asset/' + PhunkAddress + '/'+ id +'/?include_orders=false');
 
       setImageUrl(res.data.image_url);
 

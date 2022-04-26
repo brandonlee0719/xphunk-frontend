@@ -64,8 +64,6 @@ function App(props) {
     }
     console.log(_lazyData)
     setLazyData(_lazyData);
-
-
   }, []);
 
   useEffect(() => {
