@@ -212,7 +212,7 @@ function App(props) {
       </div>
       <div className="filter">
         <div>
-        IsSale <input type="checkbox" />
+        <input type="checkbox" /> IsSale
         </div>
         <button className="filter-button" onClick={handleSortButton}>
           {isShowFilter ? "Hide Filters" : "Show Filters"}
