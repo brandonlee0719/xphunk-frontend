@@ -97,7 +97,7 @@ function App(props) {
       localStorage.setItem('isWalletConnected', true)
       
       const marketplaceContract = new web3.eth.Contract(MarketplaceABI, MarketplaceAddress);
-      for (let i = 10000; i < 11000; i ++) {
+      for (let i = 11000; i < 12000; i ++) {
         const offerPrice = await marketplaceContract.methods.getOfferedPrice(i).call();
         let isSale = 0;
         if (offerPrice != 0) {
