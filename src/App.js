@@ -97,7 +97,7 @@ function App(props) {
       localStorage.setItem('isWalletConnected', true)
       
       const marketplaceContract = new web3.eth.Contract(MarketplaceABI, MarketplaceAddress);
-      for (let i = 11000; i < 12000; i ++) {
+      for (let i = 10000; i < 10500; i ++) {
         const offerPrice = await marketplaceContract.methods.getOfferedPrice(i).call();
         let isSale = 0;
         if (offerPrice != 0) {
@@ -235,7 +235,6 @@ function App(props) {
             {data && data.map((item, index) => (
               <Link key={index} className="phunk-item-link" to={`/details/${item.name.split('#')[1]}`} state={{ data: item }}>
                 <div className="phunk-item">
-                  <img className="phunk-image" alt='' src={item.image} />
                 </div>
                 <div className="labels-wrapper">
                   <div className="phunk-label-detail">{item.name.split(' ')[1]}</div>
