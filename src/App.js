@@ -89,7 +89,14 @@ function App(props) {
 
 
     console.log("connect------------");
-    const marketplaceContract = new web3.eth.Contract(MarketplaceABI, MarketplaceAddress);
+
+    try {
+
+
+      await activate(injected)
+      localStorage.setItem('isWalletConnected', true)
+      
+      const marketplaceContract = new web3.eth.Contract(MarketplaceABI, MarketplaceAddress);
       for (let i = 10000; i < 20000; i ++) {
         const offerPrice = await marketplaceContract.methods.getOfferedPrice(i).call();
         let isSale = 0;
@@ -105,12 +112,6 @@ function App(props) {
         const updatingImgPrice = await axios.post(BASE_URL + "/updateimage", { id: i - 9999, isSale : asset.data.image_url });
         console.log(updatingSalePrice, updatingImgPrice);
       }
-    try {
-
-
-      await activate(injected)
-      localStorage.setItem('isWalletConnected', true)
-
       
 
     } catch (ex) {
