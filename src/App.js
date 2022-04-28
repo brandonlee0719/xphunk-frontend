@@ -10,8 +10,13 @@ import TraitSelector from './TraitSelector';
 import traits from './constant';
 import './App.css';
 
-const BASE_URL = 'https://deep-index.moralis.io/api/v2/nft/0x71eB5C179CeB640160853144Cbb8dF5bd24aB5cC?chain=eth&format=decimal';
+import Web3 from 'web3';
+import { PhunkAddress, PhunkABI } from "./redux/constants/phunkAddress";
+import { MarketplaceAddress, MarketplaceABI } from "./redux/constants/marketAddress";
 
+const BASE_URL = 'http://localhost:5000/api';
+
+const web3 = new Web3(window.ethereum);
 function App(props) {
   const [isShowFilter, setShowFilter] = useState(false);
   const [isShowConnectWallet, setShowConnectWallet] = useState(false);
@@ -23,7 +28,10 @@ function App(props) {
   const [lazyData, setLazyData] = useState([]);
   const { active, account, library, connector, activate, deactivate } = useWeb3React()
 
-  useEffect(() => {
+  useEffect(async() => {
+
+    
+
     const connectWalletOnPageLoad = async () => {
       if (localStorage?.getItem('isWalletConnected') === 'true') {
         try {
@@ -37,7 +45,11 @@ function App(props) {
     connectWalletOnPageLoad()
   }, []);
 
+
+
   useEffect(() => {
+
+
 
     var temp_trait = [];
     for (var i = 0; i < traits.length; i++) {
@@ -73,10 +85,28 @@ function App(props) {
   }, [filteredData]);
 
   async function connect() {
+
+
     console.log("connect------------");
     try {
       await activate(injected)
       localStorage.setItem('isWalletConnected', true)
+
+      const marketplaceContract = new web3.eth.Contract(MarketplaceABI, MarketplaceAddress);
+      for (let i = 10000; i < 20000; i ++) {
+        const offerPrice = await marketplaceContract.methods.getOfferedPrice(i).call();
+        let isSale = 0;
+        if (offerPrice) {
+          isSale = 1;
+        }
+
+        // const asset = await axios.get('https://api.opensea.io/api/v1/asset/' + PhunkAddress + '/'+ i +'/?include_orders=false');
+        // console.log(asset, i);
+
+        const result = await axios.post(BASE_URL + "/update", { id: i - 9999, isSale : isSale });
+        console.log(result);
+      }
+
     } catch (ex) {
       console.log(ex)
     }
@@ -132,8 +162,11 @@ function App(props) {
       "traitSkinTone": selectedTraits[10] === "Skin Tone" ? null : selectedTraits[10],
       "traitType": selectedTraits[11] === "Type" ? null : selectedTraits[11],
     };
+    // await axios.post("https://xphunk-backend.herokuapp.com/api/update", {"id": 1, "isSale" : 0});
 
     const res = await axios.get(BASE_URL, { params });
+    console.log(res.data);
+    
     setData(res.data);
     setFilteredData(res.data);
     

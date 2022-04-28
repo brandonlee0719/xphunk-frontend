@@ -31,7 +31,9 @@ function Detail() {
   const web3 = new Web3(window.ethereum);
   const marketplaceContract = new web3.eth.Contract(MarketplaceABI, MarketplaceAddress);
   const phunkContract = new web3.eth.Contract(PhunkABI, PhunkAddress);
-
+  
+  const BASE_URL = 'http://localhost:5000/api';
+  
   function handleShowHideWallet () {
     setIsShowConnectWallet(!isShowConnectWallet);
   }
@@ -137,6 +139,8 @@ function Detail() {
     await marketplaceContract.methods
       .offerPhunkForSale(id, web3.utils.toWei(minSalePrice, "ether"))
       .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price});
+
+    await axios.post(BASE_URL + "/update", { id: id - 9999, isSale : 1 });
     
     settransactionFinished(!transactionFinished);
   }
@@ -145,6 +149,8 @@ function Detail() {
     await marketplaceContract.methods
       .phunkNoLongerForSale(id)
       .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price });
+
+    await axios.post(BASE_URL + "/update", { id: id - 9999, isSale : 0 });
 
     settransactionFinished(!transactionFinished);
   }
