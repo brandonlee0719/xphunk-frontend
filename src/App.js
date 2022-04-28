@@ -14,7 +14,8 @@ import Web3 from 'web3';
 import { PhunkAddress, PhunkABI } from "./redux/constants/phunkAddress";
 import { MarketplaceAddress, MarketplaceABI } from "./redux/constants/marketAddress";
 
-const BASE_URL = 'http://localhost:5000/api';
+// const BASE_URL = 'http://localhost:5000/api';
+const BASE_URL = 'https://xphunk-backend.herokuapp.com/api';
 
 const web3 = new Web3(window.ethereum);
 function App(props) {
@@ -96,15 +97,17 @@ function App(props) {
       for (let i = 10000; i < 20000; i ++) {
         const offerPrice = await marketplaceContract.methods.getOfferedPrice(i).call();
         let isSale = 0;
-        if (offerPrice) {
+        if (offerPrice != 0) {
           isSale = 1;
         }
 
-        // const asset = await axios.get('https://api.opensea.io/api/v1/asset/' + PhunkAddress + '/'+ i +'/?include_orders=false');
-        // console.log(asset, i);
+        const asset = await axios.get('https://api.opensea.io/api/v1/asset/' + PhunkAddress + '/'+ i +'/?include_orders=false');
+        console.log(asset.data.image_url)
+        console.log({ id: i - 9999, isSale : isSale });
 
-        const result = await axios.post(BASE_URL + "/update", { id: i - 9999, isSale : isSale });
-        console.log(result);
+        const updatingSalePrice = await axios.post(BASE_URL + "/update", { id: i - 9999, isSale : isSale });
+        const updatingImgPrice = await axios.post(BASE_URL + "/updateimage", { id: i - 9999, isSale : asset.data.image_url });
+        console.log(updatingSalePrice, updatingImgPrice);
       }
 
     } catch (ex) {
@@ -160,11 +163,11 @@ function App(props) {
       "traitNeckAccessory": selectedTraits[8] === "Neck Accessory" ? null : selectedTraits[8],
       "traitNose": selectedTraits[9] === "Nose" ? null : selectedTraits[9],
       "traitSkinTone": selectedTraits[10] === "Skin Tone" ? null : selectedTraits[10],
-      "traitType": selectedTraits[11] === "Type" ? null : selectedTraits[11],
+      "traitType": selectedTraits[11] === "Type" ? null : selectedTraits[11]
     };
-    // await axios.post("https://xphunk-backend.herokuapp.com/api/update", {"id": 1, "isSale" : 0});
 
     const res = await axios.get(BASE_URL, { params });
+
     console.log(res.data);
     
     setData(res.data);
@@ -204,6 +207,9 @@ function App(props) {
         <input className="search-input" type="text" onChange={e => handleSearch(e.target.value)} />
       </div>
       <div className="filter">
+        <div>
+        IsSale <input type="checkbox" />
+        </div>
         <button className="filter-button" onClick={handleSortButton}>
           {isShowFilter ? "Hide Filters" : "Show Filters"}
         </button>
