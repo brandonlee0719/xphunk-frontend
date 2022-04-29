@@ -431,3 +431,8 @@ button {
         transform: translate(220px);
     }
 }
+
+.isSale {
+    padding-top: 5px;
+    padding-right: 10px;
+}

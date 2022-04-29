@@ -25,6 +25,7 @@ function App(props) {
   const [selectedTraits, setSelectedTraits] = useState([]);
   const [data, setData] = useState(false);
   const [filteredData, setFilteredData] = useState(false);
+  const [isSale, setIsSale] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [lazyData, setLazyData] = useState([]);
   const { active, account, library, connector, activate, deactivate } = useWeb3React()
@@ -85,34 +86,15 @@ function App(props) {
     }
   }, [filteredData]);
 
+  useEffect(() => {
+    handleFilterData();
+  }, [isSale]);
+
   async function connect() {
-
-
     console.log("connect------------");
-
     try {
-
-
       await activate(injected)
       localStorage.setItem('isWalletConnected', true)
-      
-      const marketplaceContract = new web3.eth.Contract(MarketplaceABI, MarketplaceAddress);
-      for (let i = 10000; i < 10500; i ++) {
-        const offerPrice = await marketplaceContract.methods.getOfferedPrice(i).call();
-        let isSale = 0;
-        if (offerPrice != 0) {
-          isSale = 1;
-        }
-
-        const asset = await axios.get('https://api.opensea.io/api/v1/asset/' + PhunkAddress + '/'+ i +'/?include_orders=false');
-        console.log(asset.data.image_url)
-        console.log({ id: i - 9999, isSale : isSale });
-
-        const updatingSalePrice = await axios.post(BASE_URL + "/update", { id: i - 9999, isSale : isSale });
-        const updatingImgPrice = await axios.post(BASE_URL + "/updateimage", { id: i - 9999, isSale : asset.data.image_url });
-        console.log(updatingSalePrice, updatingImgPrice);
-      }
-      
 
     } catch (ex) {
       console.log(ex)
@@ -167,7 +149,8 @@ function App(props) {
       "traitNeckAccessory": selectedTraits[8] === "Neck Accessory" ? null : selectedTraits[8],
       "traitNose": selectedTraits[9] === "Nose" ? null : selectedTraits[9],
       "traitSkinTone": selectedTraits[10] === "Skin Tone" ? null : selectedTraits[10],
-      "traitType": selectedTraits[11] === "Type" ? null : selectedTraits[11]
+      "traitType": selectedTraits[11] === "Type" ? null : selectedTraits[11],
+      "isSale": isSale == null ? null: 1, 
     };
 
     const res = await axios.get(BASE_URL, { params });
@@ -201,6 +184,18 @@ function App(props) {
     setData(result);
   }
 
+  const changeIsSale = async() => {
+    console.log(isSale)
+    if(isSale == null) {
+      setIsSale(1);
+    } else {
+      setIsSale(null);
+    }
+
+    console.log(isSale)
+    
+  };
+
   return (
     <div className="App" >
       <div className="post-header-wrapper">
@@ -211,8 +206,8 @@ function App(props) {
         <input className="search-input" type="text" onChange={e => handleSearch(e.target.value)} />
       </div>
       <div className="filter">
-        <div>
-        <input type="checkbox" /> IsSale
+        <div className="isSale">
+          <input type="checkbox" onChange={e => changeIsSale()} /> isSale
         </div>
         <button className="filter-button" onClick={handleSortButton}>
           {isShowFilter ? "Hide Filters" : "Show Filters"}
@@ -235,6 +230,7 @@ function App(props) {
             {data && data.map((item, index) => (
               <Link key={index} className="phunk-item-link" to={`/details/${item.name.split('#')[1]}`} state={{ data: item }}>
                 <div className="phunk-item">
+                  <img className="phunk-image" alt='' src={item.image} />
                 </div>
                 <div className="labels-wrapper">
                   <div className="phunk-label-detail">{item.name.split(' ')[1]}</div>
