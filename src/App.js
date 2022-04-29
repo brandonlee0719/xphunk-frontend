@@ -200,7 +200,7 @@ function App(props) {
     <div className="App" >
       <div className="post-header-wrapper">
         <h1>Expansion Phunks Marketplace</h1>
-        <h2>{data ? data.length : 0}/10000 xPhunks Total</h2>
+        <h2>{!isLoading && data.length ? data.length : 0}/10000 xPhunks Total</h2>
       </div>
       <div className="search">
         <input className="search-input" type="text" onChange={e => handleSearch(e.target.value)} />
