@@ -203,7 +203,7 @@ function Detail() {
             <div className="title-color">
               <h1 className="mobile-h1">ExpansionPhunks {id}</h1>
             </div>
-            <h2 className="mobile-h2">One of {traits["Type"] != null && traits["Type"].count} <span _ngcontent-erd-c39="" className="pink">{traits["Type"] != null && traits["Type"].value}</span> phunks.</h2>
+            <h2 className="mobile-h2">One of {traits["Type"] != null && traits["Type"].count} <span _ngcontent-erd-c39="" className="pink">{traits["Type"] != null && traits["Type"].value}</span> xphunks.</h2>
           </div>
           <div className="accessories-wrapper">
             <h2>Attributes</h2>
@@ -264,16 +264,16 @@ function Detail() {
           { isLoading ? <div></div> : 
             <div className="market-status">
               <h2>Current Market Status</h2>
-              <p>This phunk is currently owned by address <a
+              <p>This xphunk is currently owned by address <a
                 href={"https://etherscan.io/address/" + ownerAddress} target="_blank" rel="noreferrer">
                 <span className="pink">{ownerAddress.slice(0, 5) + "..." + ownerAddress.substr(ownerAddress.length - 4)}</span>
               </a>.</p>
               {
                 Number(price) 
-                ? <p>This phunk is currently for sale for <span className="pink">{price} ETH</span>
+                ? <p>This xphunk is currently for sale for <span className="pink">{price} ETH</span>
                     {/* <span className="bold"> ()</span>. */}
                   </p>
-                : <p>This phunk is currently not for sale.</p>
+                : <p>This xphunk is currently not for sale.</p>
               }
               {
                 Number(bid)
@@ -281,7 +281,7 @@ function Detail() {
                 href={"https://etherscan.io/address/" + bidder} target="_blank" rel="noreferrer">
                 <span className="pink">{bidder.slice(0, 5) + "..." + bidder.substr(bidder.length - 4)}</span>
               </a>.</p>
-                : <p>There are currently no bids on this phunk.</p>
+                : <p>There are currently no bids on this xphunk.</p>
               }
             </div>
           }

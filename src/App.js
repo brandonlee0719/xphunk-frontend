@@ -25,7 +25,7 @@ function App(props) {
   const [selectedTraits, setSelectedTraits] = useState([]);
   const [data, setData] = useState(false);
   const [filteredData, setFilteredData] = useState(false);
-  const [isSale, setIsSale] = useState(null);
+  const [isSale, setIsSale] = useState(1);
   const [searchValue, setSearchValue] = useState("");
   const [lazyData, setLazyData] = useState([]);
   const { active, account, library, connector, activate, deactivate } = useWeb3React()
@@ -200,14 +200,14 @@ function App(props) {
     <div className="App" >
       <div className="post-header-wrapper">
         <h1>Expansion Phunks Marketplace</h1>
-        <h2>{!isLoading && data.length ? data.length : 0}/10000 xPhunks Total</h2>
+        <h2>{!isLoading && data ? data.length : 0}/10000 xPhunks Total</h2>
       </div>
       <div className="search">
         <input className="search-input" type="text" onChange={e => handleSearch(e.target.value)} />
       </div>
       <div className="filter">
         <div className="isSale">
-          <input type="checkbox" onChange={e => changeIsSale()} /> For Sale
+          <input type="checkbox" onChange={e => changeIsSale()} checked /> For Sale
         </div>
         <button className="filter-button" onClick={handleSortButton}>
           {isShowFilter ? "Hide Filters" : "Show Filters"}
