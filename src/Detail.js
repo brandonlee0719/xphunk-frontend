@@ -191,7 +191,12 @@ function Detail() {
           <h2 className="number mobile-h2">{id}</h2>
         </div>
         <div className="image-wrapper">
+        {
+          isLoading ? 
+          <img className="phunk-image ng-lazyloaded" alt='' src="../flip.gif" />
+          :
           <img alt="" src={imageUrl} className="ng-lazyloaded" />
+        }
         </div>
         <div className="details-wrapper">
           <div className="title-wrapper">

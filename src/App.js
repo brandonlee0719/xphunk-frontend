@@ -200,14 +200,14 @@ function App(props) {
     <div className="App" >
       <div className="post-header-wrapper">
         <h1>Expansion Phunks Marketplace</h1>
-        <h2>{data.length}/10000 xPhunks Total</h2>
+        <h2>{data ? data.length : 0}/10000 xPhunks Total</h2>
       </div>
       <div className="search">
         <input className="search-input" type="text" onChange={e => handleSearch(e.target.value)} />
       </div>
       <div className="filter">
         <div className="isSale">
-          <input type="checkbox" onChange={e => changeIsSale()} /> isSale
+          <input type="checkbox" onChange={e => changeIsSale()} /> For Sale
         </div>
         <button className="filter-button" onClick={handleSortButton}>
           {isShowFilter ? "Hide Filters" : "Show Filters"}
