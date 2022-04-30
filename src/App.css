@@ -158,8 +158,9 @@ h2 {
     position: fixed;
     top: 6rem;
     right: 0;
+    max-width: 450px;
     box-shadow: 15px 5px 30px 5px #0000000d;
-    padding: 7px 75px 7px 75px;
+    padding: 7px 60px 7px 75px;
     background: #fcfcfc;
     border: 1px solid #ddd;
     border-right: none;
@@ -167,7 +168,7 @@ h2 {
 }
 
 .hide-modal {
-    transform: translate(440px);
+    transform: translate(480px);
 }
 
 .hide-show {
