@@ -158,10 +158,8 @@ h2 {
     position: fixed;
     top: 6rem;
     right: 0;
-    width: 100%;
-    max-width: 400px;
     box-shadow: 15px 5px 30px 5px #0000000d;
-    padding: 7px 10px 7px 75px;
+    padding: 7px 75px 7px 75px;
     background: #fcfcfc;
     border: 1px solid #ddd;
     border-right: none;
