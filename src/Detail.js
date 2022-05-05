@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams, useLocation } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useWeb3React } from "@web3-react/core";
 import { injected } from "./connectors";
@@ -23,7 +23,7 @@ function Detail() {
   const [minSalePrice, setMinSalePrice] = useState(0);
   const [bidPrice, setBidPrice] = useState(0);
   const [pendingWithdrawal, setPendingWithdrawal] = useState(0);
-  const { active, account, library, connector, activate, deactivate } = useWeb3React();
+  const { active, account, activate, deactivate } = useWeb3React();
   const [modalForSale, setModalForSale] = useState(false);
   const [modalForBid, setModalForBid] = useState(false);
   const [modalForAcceptBid, setModalForAcceptBid] = useState(false);
@@ -32,8 +32,9 @@ function Detail() {
   const marketplaceContract = new web3.eth.Contract(MarketplaceABI, MarketplaceAddress);
   const phunkContract = new web3.eth.Contract(PhunkABI, PhunkAddress);
   
-  const BASE_URL = 'http://localhost:5000/api';
-  
+  const BASE_URL = 'http://localhost:8000/api';
+  // const BASE_URL = 'https://xphunk-backend.herokuapp.com/api';
+
   function handleShowHideWallet () {
     setIsShowConnectWallet(!isShowConnectWallet);
   }
@@ -140,7 +141,7 @@ function Detail() {
       .offerPhunkForSale(id, web3.utils.toWei(minSalePrice, "ether"))
       .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price});
 
-    await axios.post(BASE_URL + "/update", { id: id - 9999, isSale : 1 });
+    await axios.post(BASE_URL + "/updatexphunk", { id: id - 9999, isSaleXphunk : 1 });
     
     settransactionFinished(!transactionFinished);
   }
@@ -150,7 +151,7 @@ function Detail() {
       .phunkNoLongerForSale(id)
       .send({ from: account, gas: 1000000, gasPrice: web3.eth.gas_price });
 
-    await axios.post(BASE_URL + "/update", { id: id - 9999, isSale : 0 });
+    await axios.post(BASE_URL + "/updatexphunk", { id: id - 9999, isSaleXphunk : 0 });
 
     settransactionFinished(!transactionFinished);
   }

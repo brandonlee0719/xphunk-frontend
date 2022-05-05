@@ -1,23 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useWeb3React } from "@web3-react/core";
 import axios from 'axios';
-import { useDispatch, useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
 
 import { injected } from "./connectors";
-import { fetchData } from "./redux/data/dataActions";
 import TraitSelector from './TraitSelector';
 import traits from './constant';
 import './App.css';
 
-import Web3 from 'web3';
-import { PhunkAddress, PhunkABI } from "./redux/constants/phunkAddress";
-import { MarketplaceAddress, MarketplaceABI } from "./redux/constants/marketAddress";
+const BASE_URL = 'http://localhost:8000/api';
+// const BASE_URL = 'https://xphunk-backend.herokuapp.com/api';
 
-// const BASE_URL = 'http://localhost:5000/api';
-const BASE_URL = 'https://xphunk-backend.herokuapp.com/api';
-
-const web3 = new Web3(window.ethereum);
 function App(props) {
   const [isShowFilter, setShowFilter] = useState(false);
   const [isShowConnectWallet, setShowConnectWallet] = useState(false);
@@ -25,15 +18,13 @@ function App(props) {
   const [selectedTraits, setSelectedTraits] = useState([]);
   const [data, setData] = useState(false);
   const [filteredData, setFilteredData] = useState(false);
-  const [isSale, setIsSale] = useState(1);
+  const [isSaleXphunk, setIsSaleXphunk] = useState(true);
+  const [isSaleOpensea, setIsSaleOpensea] = useState(true);
   const [searchValue, setSearchValue] = useState("");
   const [lazyData, setLazyData] = useState([]);
   const { active, account, library, connector, activate, deactivate } = useWeb3React()
 
-  useEffect(async() => {
-
-    
-
+  useEffect(async () => {
     const connectWalletOnPageLoad = async () => {
       if (localStorage?.getItem('isWalletConnected') === 'true') {
         try {
@@ -47,36 +38,26 @@ function App(props) {
     connectWalletOnPageLoad()
   }, []);
 
-
-
   useEffect(() => {
-
-
-
     var temp_trait = [];
     for (var i = 0; i < traits.length; i++) {
       temp_trait.push(traits[i].trait_type);
     }
     setSelectedTraits(temp_trait)
     handleFilterData();
-    console.log(data);
 
     let _lazyData = [];
-
-    for (let i=10000; i<12000; i++) {
-        _lazyData.push(<Link key={i} className="phunk-item-link" to={'/details/' + i}>
-                <div className="phunk-item">
-                  <img className="phunk-image" alt='' src="./flip.gif" />
-                </div>
-                <div className="labels-wrapper">
-                  <div className="phunk-label-detail">#{i}</div>
-                </div>
-              </Link>
-              );
-
-        // _lazyData.push(<h2 key={i}>hello</h2>)
+    for (let i = 10000; i < 12000; i++) {
+      _lazyData.push(<Link key={i} className="phunk-item-link" to={'/details/' + i}>
+        <div className="phunk-item">
+          <img className="phunk-image" alt='' src="./flip.gif" />
+        </div>
+        <div className="labels-wrapper">
+          <div className="phunk-label-detail">#{i}</div>
+        </div>
+      </Link>
+      );
     }
-    console.log(_lazyData)
     setLazyData(_lazyData);
   }, []);
 
@@ -88,10 +69,9 @@ function App(props) {
 
   useEffect(() => {
     handleFilterData();
-  }, [isSale]);
+  }, [isSaleXphunk, isSaleOpensea]);
 
   async function connect() {
-    console.log("connect------------");
     try {
       await activate(injected)
       localStorage.setItem('isWalletConnected', true)
@@ -102,7 +82,6 @@ function App(props) {
   }
 
   async function disconnect() {
-    console.log("disconnect------------");
     try {
       deactivate()
       localStorage.setItem('isWalletConnected', false)
@@ -150,17 +129,13 @@ function App(props) {
       "traitNose": selectedTraits[9] === "Nose" ? null : selectedTraits[9],
       "traitSkinTone": selectedTraits[10] === "Skin Tone" ? null : selectedTraits[10],
       "traitType": selectedTraits[11] === "Type" ? null : selectedTraits[11],
-      "isSale": isSale == null ? null: 1, 
+      "isSaleXphunk": isSaleXphunk === false ? null : 1,
+      "isSaleOpensea": isSaleOpensea === false ? null : 1,
     };
 
     const res = await axios.get(BASE_URL, { params });
-
-    console.log(res.data);
-    
     setData(res.data);
     setFilteredData(res.data);
-    
-
     setLoading(false);
   };
 
@@ -168,10 +143,9 @@ function App(props) {
     setShowConnectWallet(!isShowConnectWallet);
   };
 
-  const handleSearch = async(value) => {
-    console.log(filteredData)
+  const handleSearch = async (value) => {
     setSearchValue(value);
-    const result = filteredData.filter(function(row) {
+    const result = filteredData.filter(function (row) {
       const nameArr = row.name.split("#");
       const number = nameArr[nameArr.length - 1];
       if (number.search(value) >= 0) {
@@ -184,16 +158,12 @@ function App(props) {
     setData(result);
   }
 
-  const changeIsSale = async() => {
-    console.log(isSale)
-    if(isSale == null) {
-      setIsSale(1);
+  const changeIsSale = async (index) => {
+    if (index == 0) {
+      setIsSaleXphunk(!isSaleXphunk);
     } else {
-      setIsSale(null);
+      setIsSaleOpensea(!isSaleOpensea);
     }
-
-    console.log(isSale)
-    
   };
 
   return (
@@ -207,7 +177,10 @@ function App(props) {
       </div>
       <div className="filter">
         <div className="isSale">
-          <input type="checkbox" onChange={e => changeIsSale()} checked /> For Sale
+          <input type="checkbox" onChange={e => changeIsSale(0)} checked={isSaleXphunk} /> For Sale Only Xphunk
+        </div>
+        <div className="isSale">
+          <input type="checkbox" onChange={e => changeIsSale(1)} checked={isSaleOpensea} /> For Sale Only Opensea
         </div>
         <button className="filter-button" onClick={handleSortButton}>
           {isShowFilter ? "Hide Filters" : "Show Filters"}
@@ -220,10 +193,9 @@ function App(props) {
         handleTraitClear={handleTraitClear}
       />}
       {
-        // isLoading && lazyData
         isLoading ? (
           <div className="listings-wrapper">
-          {lazyData}
+            {lazyData}
           </div>
         ) :
           <div className="listings-wrapper">
@@ -239,8 +211,6 @@ function App(props) {
             ))}
           </div>
       }
-
-
       <div className={isShowConnectWallet ? "connect-wallet" : "connect-wallet hide-modal"}>
         <h3 className="hide-show" onClick={handleShowHideWallet}>{isShowConnectWallet ? "hide" : "show"}</h3>
         <h3 className={active ? "min-y-margin" : "middle-y-margin"}>{active ? "Connected To Ethereum" : "Ethereum Available"}</h3>
@@ -248,7 +218,6 @@ function App(props) {
         <h4 className="min-y-margin short-address">{active && account.slice(0, 15) + "..."}</h4>
         {active && <button className={active ? "min-y-margin connect-button" : "middle-y-margin connect-button"} onClick={disconnect}>Disconnect</button>}
         {!active && <h3 className={active ? "min-y-margin connect-button" : "middle-y-margin connect-button"} onClick={connect}>Connect to MetaMask</h3>}
-
       </div>
     </div>
   );
