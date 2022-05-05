@@ -8,8 +8,8 @@ import TraitSelector from './TraitSelector';
 import traits from './constant';
 import './App.css';
 
-const BASE_URL = 'http://localhost:8000/api';
-// const BASE_URL = 'https://xphunk-backend.herokuapp.com/api';
+// const BASE_URL = 'http://localhost:8000/api';
+const BASE_URL = 'https://xphunk-backend.herokuapp.com/api';
 
 function App(props) {
   const [isShowFilter, setShowFilter] = useState(false);
