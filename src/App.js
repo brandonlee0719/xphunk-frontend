@@ -177,10 +177,10 @@ function App(props) {
       </div>
       <div className="filter">
         <div className="isSale">
-          <input type="checkbox" onChange={e => changeIsSale(0)} checked={isSaleXphunk} /> For Sale Only Xphunk
+          <input type="checkbox" onChange={e => changeIsSale(0)} checked={isSaleXphunk} /> XPhunk Marketplace
         </div>
         <div className="isSale">
-          <input type="checkbox" onChange={e => changeIsSale(1)} checked={isSaleOpensea} /> For Sale Only Opensea
+          <input type="checkbox" onChange={e => changeIsSale(1)} checked={isSaleOpensea} /> Opensea
         </div>
         <button className="filter-button" onClick={handleSortButton}>
           {isShowFilter ? "Hide Filters" : "Show Filters"}

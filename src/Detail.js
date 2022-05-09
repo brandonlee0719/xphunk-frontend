@@ -298,12 +298,12 @@ function Detail() {
             }
             {
               account && account.toLowerCase() === ownerAddress?.toLowerCase() ? 
-              <button className="button" onClick={() => setModalForSale(true)}> Sale </button>
+              <button className="button" onClick={() => setModalForSale(true)}> Sell </button>
               : <></>
             }
             {
               account && account.toLowerCase() === ownerAddress?.toLowerCase() && Number(price) ? 
-              <button className="button" onClick={() => cancelSale()}> Cancel Sale Offer </button>
+              <button className="button" onClick={() => cancelSale()}> Cancel Sell Offer </button>
               : <></>
             }
             {
